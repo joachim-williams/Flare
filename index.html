@@ -1367,14 +1367,12 @@ async function searchPrices() {
 
       if (looksLikeHTML) {
         throw new Error(
-          "The API URL returned the Flare HTML page instead of JSON. " +
-          "Your ngrok tunnel is pointing to the frontend instead of backend port 2034."
+          "error"
         );
       }
 
       throw new Error(
-        "The FLARE API did not return JSON. " +
-        `Content-Type: ${contentType || "unknown"}`
+        "error json"
       );
     }
 
@@ -1426,9 +1424,7 @@ async function searchPrices() {
       )
     ) {
       message =
-        "Could not reach the FLARE backend. " +
-        "Make sure the backend is running on port 2034, " +
-        "ngrok is forwarding to port 2034, and CORS allows this frontend.";
+        "Error, your provider currently restricts our API. Try contact them."
     }
 
     showError(message);
