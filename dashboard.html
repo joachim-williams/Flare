@@ -36,16 +36,25 @@ button, a { -webkit-tap-highlight-color: transparent; }
   border-bottom: 1px solid var(--border);
 }
 .topnav-inner {
-  max-width: 1280px; margin: 0 auto; padding: 0 16px;
+  width: 100%; max-width: none; margin: 0; padding: 0 12px 0 12px;
   height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
 .brand {
   display: flex; align-items: center; gap: 10px;
   font-size: 18px; font-weight: 700; letter-spacing: -0.4px;
   color: var(--text); text-decoration: none;
+  flex-shrink: 0;
 }
 .brand-logo { width: 28px; height: 28px; object-fit: cover; border-radius: 6px; }
-.nav-right { display: flex; align-items: center; gap: 8px; }
+.nav-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.nav-icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; padding: 0; border: 0; border-radius: 10px;
+  background: transparent; cursor: pointer; flex-shrink: 0;
+  transition: background .15s ease, transform .15s ease;
+}
+.nav-icon-btn:hover { background: rgba(255,255,255,0.06); transform: translateY(-1px); }
+.nav-icon-btn img { width: 22px; height: 22px; object-fit: contain; display: block; }
 .user-chip {
   display: none; align-items: center; gap: 8px;
   padding: 6px 12px; background: var(--surface); border: 1px solid var(--border);
@@ -311,12 +320,21 @@ body {
   backdrop-filter: blur(16px);
 }
 .topnav-inner {
-  max-width: 1120px;
+  width: 100%;
+  max-width: none;
   height: 68px;
-  padding: 0;
+  padding: 0 16px 0 12px;
 }
 .brand { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
 .brand-logo { width: 32px; height: 32px; border-radius: 0; }
+.nav-icon-btn {
+  background: transparent;
+  border-radius: 10px;
+}
+.nav-icon-btn:hover {
+  background: rgba(255,138,0,0.1);
+}
+.nav-icon-btn img { width: 24px; height: 24px; }
 .btn-login {
   color: var(--muted); background: transparent; border: 0; padding: 9px 12px;
 }
@@ -538,7 +556,7 @@ body {
   .side { width: 300px; }
 }
 @media (max-width: 720px) {
-  .topnav-inner { padding: 0 16px; }
+  .topnav-inner { padding: 0 12px; }
   .side { width: 100%; padding: 20px 16px; }
   .main { padding: 36px 16px 48px; }
   .header h1 { font-size: 2.5rem; }
@@ -555,6 +573,15 @@ body {
       <span>Flare<span style="color:var(--accent)">Deals</span></span>
     </a>
     <div class="nav-right">
+      <button class="nav-icon-btn" type="button" title="Settings" aria-label="Settings" id="settingsBtn">
+        <img src="https://iili.io/nAluBTP.png" alt="Settings">
+      </button>
+      <button class="nav-icon-btn" type="button" title="Profile" aria-label="Profile" id="profileBtn">
+        <img src="https://iili.io/nAluy9p.png" alt="Profile">
+      </button>
+      <button class="nav-icon-btn" type="button" title="Customise alerts" aria-label="Customise alerts" id="alertsBtn">
+        <img src="https://iili.io/nAlRXh7.png" alt="Customise alerts">
+      </button>
       <div class="user-chip" id="userChip">
         <span id="userNameDisplay"></span>
         <button class="btn-logout" id="logoutBtn" type="button">Logout</button>
