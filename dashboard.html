@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flare Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0707;
+  --bg2: #0b0707;
+  --surface: #181515;
+  --border: #2e2828;
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --muted2: #71717a;
+  --accent: #ef4444;
+  --accent-hover: #ff5555;
+  --green: #22c55e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh; color: var(--text); background: var(--bg);
+  font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px;
+  line-height: 1.5; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.topnav {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(13,7,7,0.9); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.topnav-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 16px;
+  height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 18px; font-weight: 700; letter-spacing: -0.4px;
+  color: var(--text); text-decoration: none;
+}
+.brand-logo { width: 28px; height: 28px; object-fit: cover; border-radius: 6px; }
+.nav-right { display: flex; align-items: center; gap: 8px; }
+.user-chip {
+  display: none; align-items: center; gap: 8px;
+  padding: 6px 12px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px; font-size: 13px; font-weight: 600;
+}
+.user-chip.show { display: inline-flex; }
+.btn-logout {
+  padding: 6px 12px; border-radius: 8px; border: 0; background: transparent;
+  color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.btn-logout:hover { color: var(--text); }
+.btn-login, .btn-signup {
+  padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--border);
+}
+.btn-login { background: var(--surface); color: var(--text); }
+.btn-login:hover { border-color: var(--accent); }
+.btn-signup { background: var(--accent); color: #fff; border-color: transparent; }
+.btn-signup:hover { background: var(--accent-hover); }
+
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 2000; display: none;
+  align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  width: min(400px, 94vw); background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px 24px; box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+}
+.modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.modal p.sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+.modal label { display: block; font-size: 12px; font-weight: 600; color: var(--muted2); margin-bottom: 6px; }
+.modal input {
+  width: 100%; height: 42px; padding: 0 12px; margin-bottom: 14px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); outline: none;
+}
+.modal input:focus { border-color: var(--accent); }
+.modal .error { color: #fca5a5; font-size: 13px; margin-bottom: 12px; display: none; }
+.modal .error.show { display: block; }
+.modal .actions { display: flex; gap: 10px; margin-top: 8px; }
+.modal .actions button {
+  flex: 1; height: 42px; border: 0; border-radius: 10px; font-weight: 600; cursor: pointer;
+}
+.modal .primary { background: var(--accent); color: #fff; }
+.modal .primary:hover { background: var(--accent-hover); }
+.modal .secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+.modal .switch { text-align: center; margin-top: 16px; font-size: 13px; color: var(--muted); }
+.modal .switch a { color: var(--accent); cursor: pointer; font-weight: 600; }
+.verification-code-input {
+  text-align: center;
+  font-size: 26px !important;
+  font-weight: 700;
+  letter-spacing: 8px;
+}
+.verification-hint {
+  margin-top: -6px;
+  margin-bottom: 14px;
+  color: var(--muted2);
+  font-size: 11px;
+  text-align: center;
+}
+
+
+.gate {
+  min-height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px; text-align: center; padding: 40px;
+}
+.gate h2 { font-size: 22px; font-weight: 700; }
+.gate p { color: var(--muted); max-width: 360px; }
+
+.app { min-height: calc(100vh - 64px); display: none; }
+.app.show { display: flex; }
+.side {
+  width: 38.2%; max-width: 380px; min-width: 260px; min-height: calc(100vh - 64px);
+  position: sticky; top: 64px; display: flex; flex-direction: column;
+  padding: 24px 18px; background: var(--bg2); border-right: 1px solid var(--border); z-index: 20;
+}
+.sidebar-section { margin-bottom: 20px; }
+.label { color: var(--muted2); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.input-row { display: flex; gap: 8px; }
+.input-row input {
+  width: 100%; height: 40px; padding: 0 12px; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border); outline: none;
+}
+.input-row input::placeholder { color: var(--muted2); }
+.input-row input:focus { border-color: var(--accent); }
+.input-row button {
+  flex: 0 0 40px; height: 40px; border: 0; color: #fff; background: var(--accent);
+  font-size: 18px; font-weight: 600; cursor: pointer;
+}
+.input-row button:hover { background: var(--accent-hover); }
+.custom-domain { margin-top: 10px; }
+.custom-domain input {
+  width: 100%; height: 36px; padding: 0 12px; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border); outline: none; font-size: 12px;
+}
+.shops { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.shops label {
+  min-width: 0; height: 34px; display: flex; align-items: center; justify-content: center;
+  gap: 6px; color: var(--muted); background: var(--surface); border: 1px solid var(--border);
+  font-size: 12px; font-weight: 500; cursor: pointer;
+}
+.shops label:hover { color: var(--text); }
+.shops input { accent-color: var(--accent); }
+.item-list {
+  max-height: 280px; min-height: 0; overflow-y: auto; margin-bottom: 16px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.item-tag {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-height: 38px; padding: 8px 10px 8px 12px; margin-bottom: 6px;
+  background: var(--surface); border: 1px solid var(--border); font-size: 13px; font-weight: 500;
+}
+.item-tag span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.remove {
+  flex: 0 0 22px; width: 22px; height: 22px; border: 0; color: var(--muted2);
+  background: transparent; font-size: 15px; cursor: pointer;
+}
+.remove:hover { color: var(--text); background: rgba(239, 68, 68, 0.12); }
+.empty-list { padding: 14px 0; color: var(--muted2); font-size: 12px; }
+.search-btn {
+  width: 100%; height: 42px; border: 0; color: #fff; background: var(--accent);
+  font-size: 13px; font-weight: 600; cursor: pointer; flex-shrink: 0;
+}
+.search-btn:hover { background: var(--accent-hover); }
+.main { flex: 1; min-width: 0; padding: 40px clamp(24px, 4vw, 56px) 56px; }
+.content { width: 100%; max-width: 860px; }
+.header { margin-bottom: 28px; }
+.header h1 { margin-bottom: 8px; font-size: clamp(28px, 3.5vw, 36px); font-weight: 600; letter-spacing: -0.8px; line-height: 1.15; }
+.header p { max-width: 520px; color: var(--muted); font-size: 15px; }
+.total-card { padding: 20px; margin-bottom: 20px; background: var(--surface); border: 1px solid var(--border); }
+.total-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+.total-label { color: var(--muted); font-size: 12px; font-weight: 500; }
+.total-label strong { display: block; color: var(--text); margin-top: 2px; font-size: 14px; font-weight: 600; }
+.total-prices { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.total-price-row { display: flex; align-items: baseline; gap: 10px; }
+.total-price-original { color: var(--muted2); font-size: 16px; font-weight: 500; text-decoration: line-through; }
+.total-price { color: var(--green); font-size: 28px; font-weight: 600; letter-spacing: -0.5px; }
+.total-discount-badge {
+  display: inline-flex; align-items: center; padding: 6px 12px; color: var(--green);
+  background: rgba(34, 197, 94, 0.14); border: 2px solid rgba(34, 197, 94, 0.35);
+  border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.3px; white-space: nowrap;
+}
+.cheapest-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.cheap-link {
+  min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 12px; color: var(--text); text-decoration: none; background: var(--bg2); border: 1px solid var(--border);
+}
+.cheap-link:hover { border-color: var(--accent); }
+.cheap-link .left { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.cheap-link .term { color: var(--muted2); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+.cheap-link .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 500; }
+.cheap-link .price-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.cheap-link .price-original { color: var(--muted2); font-size: 11px; font-weight: 500; text-decoration: line-through; }
+.cheap-link .price { color: var(--green); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.results-grid { display: grid; gap: 12px; }
+.item-card { background: var(--surface); border: 1px solid var(--border); }
+.item-card-header {
+  min-height: 46px; padding: 12px 16px; display: flex; align-items: center;
+  justify-content: space-between; gap: 12px; background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.product-name { font-size: 13px; font-weight: 600; }
+.from { color: var(--muted2); font-size: 11px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.from .from-original { text-decoration: line-through; color: var(--muted2); }
+.from b { color: var(--green); font-size: 13px; }
+.product { position: relative; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.product:last-child { border-bottom: 0; }
+.product.best { background: rgba(34, 197, 94, 0.04); }
+.product.best::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--green); }
+.product-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.price-wrap { display: flex; align-items: baseline; gap: 10px; }
+.price-original { color: var(--muted2); font-size: 14px; font-weight: 500; text-decoration: line-through; }
+.price { color: var(--green); font-size: 18px; font-weight: 600; }
+.product:not(.best) .price { font-size: 14px; }
+.discount-found {
+  display: inline-flex; align-items: center; gap: 8px; margin-left: auto; padding: 9px 14px;
+  color: var(--green); background: rgba(34, 197, 94, 0.14); border: 2px solid rgba(34, 197, 94, 0.35);
+  border-radius: 6px; font-size: 11px; font-weight: 700; white-space: nowrap;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.best-badge {
+  display: inline-flex; align-items: center; padding: 3px 7px; color: var(--green);
+  background: rgba(34, 197, 94, 0.1); font-size: 10px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;
+}
+.title { margin: 4px 0 8px; color: #e4e4e7; font-size: 13px; line-height: 1.45; }
+.meta { display: flex; align-items: center; gap: 8px; }
+.store {
+  display: inline-flex; align-items: center; min-height: 22px; padding: 2px 8px; color: var(--muted);
+  background: var(--bg2); border: 1px solid var(--border); font-size: 10px; font-weight: 500;
+}
+.open { display: inline-flex; align-items: center; gap: 3px; margin-left: auto; color: var(--accent); text-decoration: none; font-size: 12px; font-weight: 500; }
+.open:hover { color: var(--accent-hover); }
+.no-results { padding: 20px 16px; color: var(--muted); font-size: 13px; text-align: center; }
+.no-results strong { display: block; color: var(--text); margin-bottom: 4px; font-size: 14px; font-weight: 600; }
+.empty {
+  min-height: 240px; display: flex; align-items: center; justify-content: center; flex-direction: column;
+  gap: 6px; padding: 40px; color: var(--muted); text-align: center; background: var(--surface); border: 1px solid var(--border);
+}
+.empty strong { color: var(--text); font-size: 14px; font-weight: 600; }
+.empty span { color: var(--muted2); font-size: 13px; }
+.error-box {
+  padding: 14px 16px; margin-bottom: 16px; color: #fca5a5; background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2); font-size: 13px; line-height: 1.5;
+}
+#loading {
+  position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px; background: rgba(10, 10, 11, 0.92);
+}
+#loading.show { display: flex; }
+.loading-logo-wrap { width: 48px; height: 48px; display: grid; place-items: center; }
+.loading-logo { width: 40px; height: 40px; object-fit: cover; }
+.loading-copy { text-align: center; }
+.loading-copy h2 { margin-bottom: 4px; font-size: 16px; font-weight: 600; }
+.loading-copy p { color: var(--muted); font-size: 13px; }
+.loading-dots { display: flex; justify-content: center; gap: 4px; margin-top: 12px; }
+.loading-dots span { width: 5px; height: 5px; background: var(--accent); animation: dot 1.1s ease-in-out infinite; }
+.loading-dots span:nth-child(2) { animation-delay: 0.15s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.3s; }
+.loading-bar { width: min(180px, 50vw); height: 2px; overflow: hidden; background: var(--border); }
+.loading-bar::before {
+  content: ""; display: block; width: 40%; height: 100%; background: var(--accent);
+  animation: loadingBar 1.1s ease-in-out infinite;
+}
+@keyframes dot { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+@keyframes loadingBar { 0% { transform: translateX(-120%); } 100% { transform: translateX(320%); } }
+@media (max-width: 900px) { .side { width: 300px; max-width: none; } }
+@media (max-width: 720px) {
+  .app.show { display: block; }
+  .side { width: 100%; max-width: none; min-width: 0; min-height: auto; position: relative; top: 0; padding: 16px; border-right: 0; border-bottom: 1px solid var(--border); }
+  .item-list { max-height: 160px; }
+  .main { padding: 28px 16px 40px; }
+}
+
+/* ── Index visual system ───────────────────────────────────────────── */
+:root {
+  --bg: #0b0d12;
+  --bg2: #0f1219;
+  --surface: #161a23;
+  --surface-2: #12151c;
+  --border: rgba(255,255,255,0.08);
+  --text: #f4f6fb;
+  --muted: #9aa3b5;
+  --muted2: #70798b;
+  --accent: #ff8a00;
+  --accent-hover: #ff9d2e;
+  --accent-soft: rgba(255,138,0,0.15);
+  --green: #3dd68c;
+  --purple: #a78bfa;
+  --shadow: 0 20px 50px rgba(0,0,0,0.45);
+}
+body {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% -10%, rgba(255,138,0,0.10), transparent 65%),
+    var(--bg);
+  font-size: 14px;
+}
+.topnav {
+  background: rgba(11,13,18,0.78);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+}
+.topnav-inner {
+  max-width: 1120px;
+  height: 68px;
+  padding: 0;
+}
+.brand { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
+.brand-logo { width: 32px; height: 32px; border-radius: 0; }
+.btn-login {
+  color: var(--muted); background: transparent; border: 0; padding: 9px 12px;
+}
+.btn-login:hover { color: var(--text); border-color: transparent; }
+.btn-signup {
+  background: linear-gradient(135deg, var(--accent), #ff6a00);
+  color: #111; border: 0; padding: 10px 16px; border-radius: 999px;
+  box-shadow: none; transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn-signup:hover {
+  background: linear-gradient(135deg, var(--accent), #ff6a00);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(255,138,0,.35);
+}
+.user-chip {
+  background: var(--surface-2);
+  border-color: var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+.app { min-height: calc(100vh - 68px); }
+.side {
+  width: min(32%, 350px);
+  max-width: 350px;
+  min-height: calc(100vh - 68px);
+  top: 68px;
+  padding: 28px 20px;
+  background: rgba(15,18,25,.82);
+  border-right: 1px solid var(--border);
+}
+.sidebar-section { margin-bottom: 24px; }
+.label {
+  color: var(--muted);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  margin-bottom: 9px;
+}
+.input-row { gap: 8px; }
+.input-row input,
+.custom-domain input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.input-row input { height: 44px; }
+.input-row input:focus,
+.custom-domain input:focus { border-color: rgba(255,138,0,.55); box-shadow: 0 0 0 3px rgba(255,138,0,.08); }
+.input-row button,
+.search-btn {
+  background: linear-gradient(135deg, var(--accent), #ff6a00);
+  color: #111;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 800;
+}
+.input-row button:hover,
+.search-btn:hover { background: linear-gradient(135deg, var(--accent), #ff6a00); }
+.shops label {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  transition: border-color .15s ease, color .15s ease, transform .15s ease;
+}
+.shops label:hover { color: var(--text); border-color: rgba(255,138,0,.35); transform: translateY(-1px); }
+.shops input { accent-color: var(--accent); }
+.item-list {
+  max-height: 300px;
+  scrollbar-color: rgba(255,255,255,.12) transparent;
+}
+.item-tag {
+  min-height: 42px;
+  padding: 9px 10px 9px 13px;
+  margin-bottom: 7px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.item-tag:hover { border-color: rgba(255,255,255,.14); }
+.remove:hover { color: var(--text); background: var(--accent-soft); }
+.search-btn { height: 46px; font-size: .9rem; box-shadow: 0 10px 25px rgba(255,138,0,.16); }
+.main {
+  padding: 54px clamp(24px, 5vw, 70px) 70px;
+}
+.content { max-width: 900px; margin: 0 auto; }
+.header {
+  position: relative;
+  margin-bottom: 34px;
+}
+.header::before {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 180px;
+  left: -80px;
+  top: -70px;
+  background: radial-gradient(ellipse, rgba(255,138,0,.14), transparent 68%);
+  pointer-events: none;
+  z-index: -1;
+}
+.header h1 {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -.045em;
+  line-height: 1.06;
+  margin-bottom: 12px;
+}
+.header h1 {
+  background: linear-gradient(90deg, #f4f6fb 45%, #ffb347);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.header p { color: var(--muted); font-size: 1rem; max-width: 570px; }
+.total-card,
+.item-card,
+.empty {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+.total-card {
+  padding: 22px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.total-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,138,0,.09), transparent 35%, rgba(167,139,250,.04));
+  pointer-events: none;
+}
+.total-top { position: relative; }
+.total-label { color: var(--muted); }
+.total-label strong { color: var(--text); font-size: .95rem; }
+.total-price { color: var(--green); font-size: 30px; font-weight: 800; }
+.total-discount-badge,
+.discount-found {
+  color: var(--accent-2, #ffb347);
+  background: var(--accent-soft);
+  border: 1px solid rgba(255,138,0,.24);
+  border-radius: 7px;
+}
+.cheapest-link {
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 10px;
+  transition: border-color .15s ease, transform .15s ease, background .15s ease;
+}
+.cheapest-link:hover {
+  border-color: rgba(255,138,0,.35);
+  background: rgba(255,138,0,.045);
+  transform: translateY(-1px);
+}
+.item-card { overflow: hidden; }
+.item-card-header {
+  min-height: 52px;
+  padding: 14px 18px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.product-name { font-size: .9rem; font-weight: 700; }
+.from b, .price { color: var(--green); }
+.product {
+  padding: 16px 18px;
+  border-bottom-color: var(--border);
+}
+.product.best { background: rgba(61,214,140,.035); }
+.product.best::before { background: var(--green); width: 3px; }
+.best-badge {
+  color: var(--green);
+  background: rgba(61,214,140,.10);
+  border-radius: 6px;
+}
+.title { color: #dce1eb; font-size: .86rem; }
+.store {
+  background: rgba(255,255,255,.035);
+  border-color: var(--border);
+  border-radius: 6px;
+}
+.open { color: var(--accent); font-weight: 600; }
+.open:hover { color: var(--accent-hover); }
+.empty {
+  min-height: 260px;
+  background: rgba(22,26,35,.72);
+}
+.error-box {
+  background: rgba(255,138,0,.07);
+  border: 1px solid rgba(255,138,0,.20);
+  color: #ffd29a;
+  border-radius: 12px;
+}
+.modal {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+.modal input {
+  background: var(--bg);
+  border-color: var(--border);
+  border-radius: 10px;
+}
+.modal input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,138,0,.08); }
+.modal .primary {
+  background: linear-gradient(135deg, var(--accent), #ff6a00);
+  color: #111;
+}
+.modal .secondary { background: var(--surface-2); border-color: var(--border); }
+.modal .switch a { color: var(--accent); }
+#loading { background: rgba(11,13,18,.94); }
+.loading-bar::before,
+.loading-dots span { background: var(--accent); }
+@media (max-width: 900px) {
+  .side { width: 300px; }
+}
+@media (max-width: 720px) {
+  .topnav-inner { padding: 0 16px; }
+  .side { width: 100%; padding: 20px 16px; }
+  .main { padding: 36px 16px 48px; }
+  .header h1 { font-size: 2.5rem; }
+  .total-card { padding: 18px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="https://iili.io/fuZmZP9.gif" alt="Flare">
+      <span>Flare<span style="color:var(--accent)">Deals</span></span>
+    </a>
+    <div class="nav-right">
+      <div class="user-chip" id="userChip">
+        <span id="userNameDisplay"></span>
+        <button class="btn-logout" id="logoutBtn" type="button">Logout</button>
+      </div>
+      <button class="btn-login" id="openLogin" type="button">Login</button>
+      <button class="btn-signup" id="openSignup" type="button">Sign up</button>
+    </div>
+  </div>
+</nav>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <h2>Welcome back</h2>
+    <p class="sub">Log in to access the Flare dashboard</p>
+    <div class="error" id="loginError"></div>
+    <label>Username or email</label>
+    <input type="text" id="loginId" placeholder="you@example.com" autocomplete="username">
+    <label>Password</label>
+    <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+    <div class="actions">
+      <button class="secondary" type="button" onclick="closeModals()">Cancel</button>
+      <button class="primary" type="button" id="loginSubmit">Log in</button>
+    </div>
+    <div class="switch">No account? <a id="switchToSignup">Sign up</a></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <h2>Create account</h2>
+    <p class="sub">Join Flare and start finding the best deals</p>
+    <div class="error" id="signupError"></div>
+    <label>Username</label>
+    <input type="text" id="signupUsername" placeholder="cooluser" autocomplete="username">
+    <label>Email</label>
+    <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
+    <label>Password (min 8 chars)</label>
+    <input type="password" id="signupPassword" placeholder="••••••••" autocomplete="new-password">
+    <div class="actions">
+      <button class="secondary" type="button" onclick="closeModals()">Cancel</button>
+      <button class="primary" type="button" id="signupSubmit">Create account</button>
+    </div>
+    <div class="switch">Already have an account? <a id="switchToLogin">Log in</a></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="verifyModal">
+  <div class="modal">
+    <h2>Enter verification code</h2>
+    <p class="sub">We sent a 6-digit verification code to <strong id="verifyEmailDisplay"></strong>. Enter it below to activate your account.</p>
+    <div class="error" id="verifyError"></div>
+
+    <label for="verifyCodeInput">Verification code</label>
+    <input
+      type="text"
+      id="verifyCodeInput"
+      placeholder="123456"
+      maxlength="6"
+      inputmode="numeric"
+      autocomplete="one-time-code"
+      pattern="[0-9]*"
+      style="text-align:center;font-size:24px;font-weight:700;letter-spacing:8px;"
+    >
+
+    <div class="actions">
+      <button class="secondary" type="button" id="resendCodeBtn">Resend code</button>
+      <button class="primary" type="button" id="verifySubmit">Verify account</button>
+    </div>
+    <div class="switch"><a id="closeVerify">Cancel</a></div>
+  </div>
+</div>
+
+<div id="gate" class="gate">
+  <h2>Login required</h2>
+  <p>Create a free account or log in to start searching for the cheapest deals across Amazon, Tesco, Morrisons and more.</p>
+  <div style="display:flex;gap:10px;margin-top:8px;">
+    <button class="btn-login" type="button" onclick="document.getElementById('openLogin').click()">Login</button>
+    <button class="btn-signup" type="button" onclick="document.getElementById('openSignup').click()">Sign up</button>
+  </div>
+</div>
+
+<div class="app" id="app">
+<aside class="side">
+  <div class="sidebar-section">
+    <div class="label">Item adder</div>
+    <form id="addForm">
+      <div class="input-row">
+        <input type="text" id="addInput" placeholder="Search box here..." autocomplete="off">
+        <button type="submit" aria-label="Add item">+</button>
+      </div>
+      <div class="shops">
+        <label><input type="checkbox" id="amazonToggle" checked> Amazon</label>
+        <label><input type="checkbox" id="tescoToggle" checked> Tesco</label>
+        <label><input type="checkbox" id="morrisonsToggle" checked> Morrisons</label>
+      </div>
+      <div class="custom-domain">
+        <div class="label" style="margin-top:12px;margin-bottom:6px;">Custom site</div>
+        <input type="text" id="customDomain" placeholder="e.g. benandjerrys.co.uk" autocomplete="off">
+      </div>
+    </form>
+  </div>
+  <div class="label">Added Items</div>
+  <div class="item-list" id="itemList"></div>
+  <button class="search-btn" id="searchButton" type="button" style="display:none;">Search prices</button>
+</aside>
+<main class="main">
+  <div id="loading">
+    <div class="loading-logo-wrap"><img class="loading-logo" src="https://iili.io/fuZmZP9.gif" alt="FLARE"></div>
+    <div class="loading-copy">
+      <h2>FLARE is searching</h2>
+      <p>Finding the best prices across your selected stores</p>
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+    </div>
+    <div class="loading-bar"></div>
+  </div>
+  <div class="content">
+    <div class="header">
+      <h1>Flare deals.</h1>
+      <p>Looking for cheap priced deals?</p>
+    </div>
+    <div id="errorArea"></div>
+    <div id="contentArea">
+      <div class="empty">
+        <strong>Whoops... We're empty!</strong>
+        <span>Add an item to start searching.</span>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<script>
+const FLARE_API = "https://d73b-2a00-23c8-3639-601-dd36-aa07-de7d-6164.ngrok-free.app";
+const API_SEARCH_PATH = "/api/search";
+const TOKEN_KEY = "flare_token";
+const USER_KEY = "flare_user";
+
+let items = [];
+let lastResults = null;
+let currentUser = null;
+let pendingVerifyEmail = null;
+
+const addForm = document.getElementById("addForm");
+const addInput = document.getElementById("addInput");
+const itemList = document.getElementById("itemList");
+const searchButton = document.getElementById("searchButton");
+const amazonToggle = document.getElementById("amazonToggle");
+const tescoToggle = document.getElementById("tescoToggle");
+const morrisonsToggle = document.getElementById("morrisonsToggle");
+const customDomain = document.getElementById("customDomain");
+const loading = document.getElementById("loading");
+const contentArea = document.getElementById("contentArea");
+const errorArea = document.getElementById("errorArea");
+const appEl = document.getElementById("app");
+const gateEl = document.getElementById("gate");
+const userChip = document.getElementById("userChip");
+const userNameDisplay = document.getElementById("userNameDisplay");
+const openLogin = document.getElementById("openLogin");
+const openSignup = document.getElementById("openSignup");
+const logoutBtn = document.getElementById("logoutBtn");
+
+function getToken() { return localStorage.getItem(TOKEN_KEY); }
+
+// All API calls go through this helper so an HTML error page (for example
+// an ngrok/proxy page) never gets passed to JSON.parse() as if it were JSON.
+async function fetchJson(url, options = {}) {
+  const response = await fetch(url, options);
+  const raw = await response.text();
+  const contentType = response.headers.get("content-type") || "";
+
+  if (!contentType.toLowerCase().includes("application/json")) {
+    const preview = raw.replace(/\s+/g, " ").slice(0, 300);
+    throw new Error(
+      `Expected JSON from ${url}, but received HTTP ${response.status} ${contentType || "(no content type)"}. Response: ${preview}`
+    );
+  }
+
+  let data;
+  try {
+    data = JSON.parse(raw);
+  } catch {
+    throw new Error(`Invalid JSON from ${url}. Response: ${raw.slice(0, 300)}`);
+  }
+
+  if (!response.ok) {
+    throw new Error(data?.error || `HTTP ${response.status}`);
+  }
+
+  return data;
+}
+
+function setAuth(token, user) {
+  localStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  currentUser = user;
+  updateUI();
+}
+function clearAuth() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+  currentUser = null;
+  updateUI();
+}
+function updateUI() {
+  if (currentUser) {
+    userChip.classList.add("show");
+    userNameDisplay.textContent = currentUser.username;
+    openLogin.style.display = "none";
+    openSignup.style.display = "none";
+    gateEl.style.display = "none";
+    appEl.classList.add("show");
+  } else {
+    userChip.classList.remove("show");
+    openLogin.style.display = "";
+    openSignup.style.display = "";
+    gateEl.style.display = "flex";
+    appEl.classList.remove("show");
+  }
+}
+async function checkSession() {
+  const token = getToken();
+  const saved = localStorage.getItem(USER_KEY);
+  if (!token || !saved) { clearAuth(); return; }
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/me`, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "Authorization": `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true"
+      },
+      credentials: "omit"
+    });
+    if (data.success) {
+      currentUser = data.user;
+      updateUI();
+    } else clearAuth();
+  } catch {
+    clearAuth();
+  }
+}
+
+function closeModals() {
+  document.getElementById("loginModal").classList.remove("show");
+  document.getElementById("signupModal").classList.remove("show");
+  document.getElementById("verifyModal").classList.remove("show");
+  document.getElementById("loginError").classList.remove("show");
+  document.getElementById("signupError").classList.remove("show");
+  document.getElementById("verifyError").classList.remove("show");
+}
+function openLoginModal() {
+  closeModals();
+  document.getElementById("loginModal").classList.add("show");
+}
+function openSignupModal() {
+  closeModals();
+  document.getElementById("signupModal").classList.add("show");
+}
+function openVerify(email) {
+  pendingVerifyEmail = email || "";
+  const verifyModal = document.getElementById("verifyModal");
+  const verifyEmailDisplay = document.getElementById("verifyEmailDisplay");
+  const verifyCodeInput = document.getElementById("verifyCodeInput");
+  const verifyError = document.getElementById("verifyError");
+
+  closeModals();
+
+  verifyEmailDisplay.textContent = pendingVerifyEmail;
+  verifyCodeInput.value = "";
+  verifyError.textContent = "";
+  verifyError.style.color = "#fca5a5";
+  verifyError.classList.remove("show");
+
+  verifyModal.classList.add("show");
+
+  // Put the cursor directly in the verification-code box.
+  setTimeout(() => {
+    verifyCodeInput.focus();
+    verifyCodeInput.select();
+  }, 100);
+}
+
+openLogin.addEventListener("click", openLoginModal);
+openSignup.addEventListener("click", openSignupModal);
+document.getElementById("switchToSignup").addEventListener("click", openSignupModal);
+document.getElementById("switchToLogin").addEventListener("click", openLoginModal);
+document.getElementById("closeVerify").addEventListener("click", () => document.getElementById("verifyModal").classList.remove("show"));
+document.getElementById("loginModal").addEventListener("click", e => { if (e.target.id === "loginModal") closeModals(); });
+document.getElementById("signupModal").addEventListener("click", e => { if (e.target.id === "signupModal") closeModals(); });
+document.getElementById("verifyModal").addEventListener("click", e => { if (e.target.id === "verifyModal") document.getElementById("verifyModal").classList.remove("show"); });
+
+document.getElementById("loginSubmit").addEventListener("click", async () => {
+  const err = document.getElementById("loginError");
+  err.classList.remove("show");
+  const login = document.getElementById("loginId").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "ngrok-skip-browser-warning": "true"
+      },
+      body: JSON.stringify({ login, password })
+    });
+    // Some backend versions return needs_verification, while others return
+    // the verification requirement as an error/message. Handle both so the
+    // verification modal always opens instead of leaving the user stuck.
+    const verificationMessage = String(data?.error || data?.message || "").toLowerCase();
+    const needsVerification = Boolean(
+      data?.needs_verification ||
+      data?.requires_verification ||
+      data?.email_verification_required ||
+      verificationMessage.includes("verify your email") ||
+      verificationMessage.includes("verification required") ||
+      verificationMessage.includes("email not verified") ||
+      verificationMessage.includes("email is not verified")
+    );
+
+    if (needsVerification) {
+      const verifyEmail = data?.email || data?.user?.email || login;
+      openVerify(verifyEmail);
+
+      // If the backend only reports the verification requirement here,
+      // automatically request a fresh code as well.
+      try {
+        await fetchJson(`${FLARE_API}/api/auth/resend-code`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "ngrok-skip-browser-warning": "true"
+          },
+          body: JSON.stringify({ email: verifyEmail })
+        });
+      } catch (resendError) {
+        console.warn("[FLARE] Could not automatically resend verification code:", resendError);
+      }
+      return;
+    }
+    if (!data.success) throw new Error(data.error || "Login failed");
+    setAuth(data.token, data.user);
+    closeModals();
+  } catch (e) {
+    err.textContent = e.message;
+    err.classList.add("show");
+  }
+});
+
+document.getElementById("signupSubmit").addEventListener("click", async () => {
+  const err = document.getElementById("signupError");
+  err.classList.remove("show");
+  const username = document.getElementById("signupUsername").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "ngrok-skip-browser-warning": "true"
+      },
+      body: JSON.stringify({ username, email, password })
+    });
+    if (data.needs_verification) {
+      openVerify(data.email || email);
+      return;
+    }
+    if (!data.success) throw new Error(data.error || "Signup failed");
+    setAuth(data.token, data.user);
+    closeModals();
+  } catch (e) {
+    err.textContent = e.message;
+    err.classList.add("show");
+  }
+});
+
+const verifyCodeInput = document.getElementById("verifyCodeInput");
+
+verifyCodeInput.addEventListener("input", () => {
+  verifyCodeInput.value = verifyCodeInput.value.replace(/\\D/g, "").slice(0, 6);
+});
+
+verifyCodeInput.addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("verifySubmit").click();
+  }
+});
+
+document.getElementById("verifySubmit").addEventListener("click", async () => {
+  const err = document.getElementById("verifyError");
+  err.classList.remove("show");
+  const code = verifyCodeInput.value.trim();
+
+  if (!/^\\d{6}$/.test(code)) {
+    err.textContent = "Enter the 6-digit code from your email.";
+    err.style.color = "#fca5a5";
+    err.classList.add("show");
+    verifyCodeInput.focus();
+    return;
+  }
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/verify-code`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "ngrok-skip-browser-warning": "true"
+      },
+      body: JSON.stringify({ email: pendingVerifyEmail, code })
+    });
+    if (!data.success) throw new Error(data.error || "Verification failed");
+    setAuth(data.token, data.user);
+    document.getElementById("verifyModal").classList.remove("show");
+  } catch (e) {
+    err.textContent = e.message;
+    err.classList.add("show");
+  }
+});
+
+document.getElementById("resendCodeBtn").addEventListener("click", async () => {
+  const err = document.getElementById("verifyError");
+  err.classList.remove("show");
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/resend-code`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "ngrok-skip-browser-warning": "true"
+      },
+      body: JSON.stringify({ email: pendingVerifyEmail })
+    });
+    if (!data.success) throw new Error(data.error || "Could not resend");
+    err.textContent = "New code sent — check your inbox.";
+    err.style.color = "#22c55e";
+    err.classList.add("show");
+    verifyCodeInput.value = "";
+    verifyCodeInput.focus();
+  } catch (e) {
+    err.style.color = "#fca5a5";
+    err.textContent = e.message;
+    err.classList.add("show");
+  }
+});
+
+logoutBtn.addEventListener("click", async () => {
+  const token = getToken();
+  if (token) {
+    try {
+      await fetch(`${FLARE_API}/api/auth/logout`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
+      });
+    } catch {}
+  }
+  clearAuth();
+});
+
+function escapeHTML(value) {
+  const div = document.createElement("div");
+  div.textContent = value ?? "";
+  return div.innerHTML;
+}
+function formatPrice(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "£0.00";
+  return "£" + number.toFixed(2);
+}
+function discountedPrice(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number) || number <= 0) return 0;
+  let disc = Math.round(number * 0.7 * 100) / 100;
+  if (disc >= number) disc = Math.max(0, Math.round((number - 0.01) * 100) / 100);
+  return disc;
+}
+function saveItems() { localStorage.setItem("flare_items", JSON.stringify(items)); }
+function loadItems() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("flare_items") || "[]");
+    if (Array.isArray(saved)) items = saved.filter(item => typeof item === "string" && item.trim());
+  } catch { items = []; }
+}
+function renderItems() {
+  if (!items.length) {
+    itemList.innerHTML = '<div class="empty-list">Add products to begin searching for deals.</div>';
+    searchButton.style.display = "none";
+    return;
+  }
+  itemList.innerHTML = "";
+  items.forEach((item, index) => {
+    const row = document.createElement("div");
+    row.className = "item-tag";
+    row.innerHTML = `<span>${escapeHTML(item)}</span><button class="remove" type="button" aria-label="Remove ${escapeHTML(item)}" title="Remove" data-index="${index}">×</button>`;
+    row.querySelector(".remove").addEventListener("click", () => removeItem(index));
+    itemList.appendChild(row);
+  });
+  searchButton.style.display = "block";
+}
+function addItem(value) {
+  const item = value.trim();
+  if (!item) return;
+  if (items.some(existing => existing.toLowerCase() === item.toLowerCase())) { addInput.value = ""; return; }
+  items.push(item);
+  saveItems();
+  renderItems();
+  addInput.value = "";
+  addInput.focus();
+}
+function removeItem(index) {
+  items.splice(index, 1);
+  saveItems();
+  renderItems();
+  if (!items.length) { lastResults = null; showEmptyState(); }
+}
+function showLoading() { loading.classList.add("show"); document.body.style.overflow = "hidden"; }
+function hideLoading() { loading.classList.remove("show"); document.body.style.overflow = ""; }
+function showError(message) { errorArea.innerHTML = `<div class="error-box">${escapeHTML(message)}</div>`; }
+function clearError() { errorArea.innerHTML = ""; }
+function showEmptyState() {
+  contentArea.innerHTML = `<div class="empty"><strong>Whoops... We're empty!</strong><span>Add an item to start searching.</span></div>`;
+}
+function showReadyState() {
+  contentArea.innerHTML = `<div class="empty"><strong>Whoops... Nothing seems to be here add something new!</strong><span>Add items and click search to look for deals.</span></div>`;
+}
+function createCheapLink(term, data) {
+  if (!data || !data.cheapest) return "";
+  const product = data.cheapest;
+  const title = String(product.title || "");
+  const original = Number(product.price);
+  const disc = discountedPrice(original);
+  return `<a class="cheap-link" href="${escapeHTML(product.url || "#")}" target="_blank" rel="noopener noreferrer"><div class="left"><span class="term">${escapeHTML(term)}</span><span class="name">${escapeHTML(title.length > 70 ? title.slice(0, 70) + "…" : title)}</span></div><div class="price-wrap"><span class="price-original">${formatPrice(original)}</span><span class="price">${formatPrice(disc)}</span></div></a>`;
+}
+function createProduct(product, best) {
+  const original = Number(product.price);
+  const disc = discountedPrice(original);
+  if (best) {
+    return `<div class="product best"><div class="product-top"><div class="price-wrap"><span class="price-original">${formatPrice(original)}</span><span class="price">${formatPrice(disc)}</span></div><span class="discount-found">FLARE DEALS FOUND A DISCOUNT</span><span class="best-badge">Best price</span></div><div class="title">${escapeHTML(product.title || "Product")}</div><div class="meta"><span class="store">${escapeHTML(product.store || "Store")}</span><a class="open" href="${escapeHTML(product.url || "#")}" target="_blank" rel="noopener noreferrer">Open product →</a></div></div>`;
+  }
+  return `<div class="product"><div class="product-top"><div class="price">${formatPrice(product.price)}</div></div><div class="title">${escapeHTML(product.title || "Product")}</div><div class="meta"><span class="store">${escapeHTML(product.store || "Store")}</span><a class="open" href="${escapeHTML(product.url || "#")}" target="_blank" rel="noopener noreferrer">Open →</a></div></div>`;
+}
+function createItemCard(term, data) {
+  const cheapest = data && data.cheapest;
+  const results = data && Array.isArray(data.results) ? data.results : [];
+  let productsHTML = "";
+  if (cheapest) {
+    productsHTML += createProduct(cheapest, true);
+    results.filter(product => product && product !== cheapest).slice(0, 4).forEach(product => { productsHTML += createProduct(product, false); });
+  } else {
+    productsHTML = `<div class="product"><div class="no-results"><strong>Sorry we cannot find anything</strong>Nothing matched this item on the selected stores.</div></div>`;
+  }
+  const original = cheapest ? Number(cheapest.price) : 0;
+  const disc = cheapest ? discountedPrice(original) : 0;
+  return `<div class="item-card"><div class="item-card-header"><div class="product-name">${escapeHTML(term)}</div>${cheapest ? `<span class="from">From <span class="from-original">${formatPrice(original)}</span> <b>${formatPrice(disc)}</b></span>` : ""}</div>${productsHTML}</div>`;
+}
+function renderResults(data) {
+  const results = data && data.results && typeof data.results === "object" ? data.results : {};
+  let cheapestLinks = "";
+  let discountedTotal = 0;
+  let hasAny = false;
+  Object.keys(results).forEach(term => {
+    const entry = results[term];
+    if (entry && entry.cheapest) {
+      hasAny = true;
+      cheapestLinks += createCheapLink(term, entry);
+      discountedTotal += discountedPrice(entry.cheapest.price);
+    }
+  });
+  discountedTotal = Math.round(discountedTotal * 100) / 100;
+  const originalTotal = Number(data.grand_total || 0);
+  let cards = "";
+  Object.keys(results).forEach(term => { cards += createItemCard(term, results[term]); });
+  const totalSection = hasAny
+    ? `<div class="total-card"><div class="total-top"><div class="total-label">Estimated cheapest total<strong>Best available prices across your list</strong></div><div class="total-prices"><div class="total-price-row"><span class="total-price-original">${formatPrice(originalTotal)}</span><span class="total-price">${formatPrice(discountedTotal)}</span></div><span class="total-discount-badge">FLARE DEALS FOUND A DISCOUNT</span></div></div>${cheapestLinks ? `<div class="cheapest-links">${cheapestLinks}</div>` : ""}</div>`
+    : `<div class="total-card"><div class="no-results"><strong>Sorry we cannot find anything</strong>No products were found for any of your items on the selected stores.</div></div>`;
+  contentArea.innerHTML = `${totalSection}<div class="results-grid">${cards}</div>`;
+}
+function anyStoreSelected() {
+  return amazonToggle.checked || tescoToggle.checked || morrisonsToggle.checked || (customDomain.value && customDomain.value.trim());
+}
+async function searchPrices() {
+  if (!getToken()) { showError("Please log in first."); return; }
+  if (!items.length) { showEmptyState(); return; }
+  if (!anyStoreSelected()) { showError("Select at least one store or enter a custom domain."); return; }
+  clearError();
+  showLoading();
+  const searchStartedAt = performance.now();
+  const minimumSearchTime = 5000;
+  try {
+    const params = new URLSearchParams();
+    items.forEach(item => params.append("item", item));
+    params.set("amazon", amazonToggle.checked ? "1" : "0");
+    params.set("tesco", tescoToggle.checked ? "1" : "0");
+    params.set("morrisons", morrisonsToggle.checked ? "1" : "0");
+    const custom = (customDomain.value || "").trim();
+    if (custom) params.set("custom", custom);
+    const apiUrl = `${FLARE_API}${API_SEARCH_PATH}?${params.toString()}`;
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "Authorization": `Bearer ${getToken()}`,
+        "ngrok-skip-browser-warning": "true"
+      },
+      credentials: "omit"
+    });
+    const contentType = response.headers.get("content-type") || "";
+    const raw = await response.text();
+    if (!response.ok) throw new Error(`API returned HTTP ${response.status}. ${raw.slice(0, 250)}`);
+    if (!contentType.includes("application/json")) {
+      throw new Error(`The FLARE API did not return JSON. Content-Type: ${contentType || "unknown"}`);
+    }
+    let data;
+    try { data = JSON.parse(raw); } catch { throw new Error("FLARE returned invalid JSON."); }
+    if (!data || data.success !== true) throw new Error(data?.error || "The FLARE API returned an unsuccessful response.");
+    const elapsed = performance.now() - searchStartedAt;
+    const remaining = Math.max(0, minimumSearchTime - elapsed);
+    if (remaining > 0) await new Promise(resolve => setTimeout(resolve, remaining));
+    lastResults = data;
+    renderResults(data);
+  } catch (error) {
+    console.error("[FLARE] SEARCH ERROR:", error);
+    let message = error?.message || "Unable to connect to FLARE.";
+    if (message === "Failed to fetch" || message.includes("NetworkError")) {
+      message = "Could not reach the FLARE backend. Make sure the backend is running on port 2034 and ngrok is forwarding correctly.";
+    }
+    showError(message);
+    showReadyState();
+  } finally {
+    hideLoading();
+  }
+}
+
+addForm.addEventListener("submit", event => { event.preventDefault(); addItem(addInput.value); });
+addInput.addEventListener("keydown", event => { if (event.key === "Enter") { event.preventDefault(); addItem(addInput.value); } });
+searchButton.addEventListener("click", searchPrices);
+[amazonToggle, tescoToggle, morrisonsToggle].forEach(toggle => {
+  toggle.addEventListener("change", () => { if (lastResults) { lastResults = null; showReadyState(); } });
+});
+customDomain.addEventListener("change", () => { if (lastResults) { lastResults = null; showReadyState(); } });
+
+loadItems();
+renderItems();
+checkSession();
+</script>
+</body>
+</html>
