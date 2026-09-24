@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flare AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d12;
+  --bg2: #0f1219;
+  --surface: #161a23;
+  --surface-2: #12151c;
+  --border: rgba(255,255,255,0.08);
+  --text: #f4f6fb;
+  --muted: #9aa3b5;
+  --muted2: #70798b;
+  --accent: #ff8a00;
+  --accent-hover: #ff9d2e;
+  --accent-soft: rgba(255,138,0,0.15);
+  --green: #3dd68c;
+  --shadow: 0 20px 50px rgba(0,0,0,0.45);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse 70% 45% at 50% -10%, rgba(255,138,0,0.10), transparent 65%),
+    var(--bg);
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+}
+button, input, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+.topnav {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(11,13,18,0.78);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+}
+.topnav-inner {
+  width: 100%;
+  height: 68px;
+  padding: 0 16px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em;
+  color: var(--text); text-decoration: none; flex-shrink: 0;
+}
+.brand-logo { width: 32px; height: 32px; object-fit: cover; }
+.nav-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.nav-icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; padding: 0; border: 0; border-radius: 10px;
+  background: transparent; cursor: pointer; flex-shrink: 0;
+  transition: background .15s ease, transform .15s ease;
+}
+.nav-icon-btn:hover { background: rgba(255,138,0,0.1); transform: translateY(-1px); }
+.nav-icon-btn img { width: 24px; height: 24px; object-fit: contain; display: block; }
+.user-chip {
+  display: none; align-items: center; gap: 8px;
+  padding: 6px 14px; background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; font-size: 13px; font-weight: 600;
+}
+.user-chip.show { display: inline-flex; }
+.btn-logout {
+  padding: 6px 12px; border-radius: 8px; border: 0; background: transparent;
+  color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.btn-logout:hover { color: var(--text); }
+.btn-login, .btn-signup {
+  padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: 0;
+}
+.btn-login { background: transparent; color: var(--muted); }
+.btn-login:hover { color: var(--text); }
+.btn-signup {
+  background: linear-gradient(135deg, var(--accent), #ff6a00);
+  color: #111; padding: 10px 16px;
+  box-shadow: none; transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn-signup:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(255,138,0,.35);
+}
+.app-row {
+  flex: 1;
+  display: none;
+  min-height: 0;
+  width: 100%;
+}
+.app-row.show { display: flex; }
+.chat-side {
+  width: 280px;
+  flex-shrink: 0;
+  background: rgba(15,18,25,.92);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.side-top {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+}
+.new-chat-btn {
+  flex: 1;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: border-color .15s, background .15s;
+}
+.new-chat-btn:hover {
+  border-color: rgba(255,138,0,.4);
+  background: var(--accent-soft);
+  color: #fff;
+}
+.chat-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.12) transparent;
+}
+.chat-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  margin-bottom: 4px;
+  transition: background .12s, border-color .12s;
+}
+.chat-item:hover { background: rgba(255,255,255,.04); }
+.chat-item.active {
+  background: var(--accent-soft);
+  border-color: rgba(255,138,0,.25);
+}
+.chat-item-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.chat-item-menu-btn {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted2);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity .12s, background .12s, color .12s;
+}
+.chat-item:hover .chat-item-menu-btn,
+.chat-item-menu-btn.open { opacity: 1; }
+.chat-item-menu-btn:hover { background: rgba(255,255,255,.08); color: var(--text); }
+.chat-menu {
+  position: absolute;
+  right: 8px;
+  top: 36px;
+  z-index: 50;
+  min-width: 140px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 4px;
+  display: none;
+}
+.chat-menu.open { display: block; }
+.chat-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #fca5a5;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.chat-menu button:hover { background: rgba(239,68,68,.12); }
+.side-empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--muted2);
+  font-size: 12px;
+}
+.chat-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+.chat-header {
+  padding: 28px 20px 12px;
+  text-align: center;
+}
+.chat-header h1 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  background: linear-gradient(90deg, #f4f6fb 40%, #ffb347);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 6px;
+}
+.chat-header p { color: var(--muted); font-size: 14px; }
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.12) transparent;
+}
+.msg {
+  max-width: 92%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  line-height: 1.55;
+  word-break: break-word;
+}
+.msg.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(255,138,0,.18), rgba(255,106,0,.08));
+  border-color: rgba(255,138,0,.28);
+}
+.msg.assistant {
+  align-self: flex-start;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.msg .role {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted2);
+  margin-bottom: 8px;
+}
+.msg.user .role { color: var(--accent); }
+.msg.assistant .role { color: var(--green); }
+.msg-body { color: var(--text); font-size: 14.5px; }
+.msg-body p { margin: 0 0 10px; }
+.msg-body p:last-child { margin-bottom: 0; }
+.msg-body strong, .msg-body b { font-weight: 700; color: #fff; }
+.msg-body em, .msg-body i { font-style: italic; color: #e8ecf4; }
+.msg-body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88em;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 6px;
+  padding: 1px 6px;
+  color: #ffd29a;
+}
+.msg-body pre {
+  margin: 12px 0;
+  padding: 14px 16px;
+  background: #0a0c10;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 10px;
+  overflow-x: auto;
+  position: relative;
+}
+.msg-body pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: #e8ecf4;
+  font-size: 13px;
+  line-height: 1.5;
+  display: block;
+  white-space: pre;
+}
+.msg-body a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.msg-body a:hover { color: var(--accent-hover); text-decoration: underline; }
+.msg-body ul, .msg-body ol { margin: 8px 0 10px 1.2em; }
+.msg-body li { margin-bottom: 4px; }
+.msg-body h1, .msg-body h2, .msg-body h3 {
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin: 14px 0 8px;
+  color: #fff;
+}
+.msg-body h1 { font-size: 1.35em; }
+.msg-body h2 { font-size: 1.2em; }
+.msg-body h3 { font-size: 1.08em; }
+.msg-body blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 10px 0;
+  padding: 6px 0 6px 14px;
+  color: var(--muted);
+}
+.msg-body hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 14px 0;
+}
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: var(--muted);
+  cursor: pointer;
+}
+.copy-btn:hover { color: var(--text); background: rgba(255,138,0,.15); border-color: rgba(255,138,0,.3); }
+.think-wrap { margin-bottom: 10px; }
+.think-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  color: var(--muted2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.think-btn:hover { color: var(--muted); border-color: rgba(255,255,255,.14); background: rgba(255,255,255,.06); }
+.think-btn.open { color: var(--accent); border-color: rgba(255,138,0,.3); background: var(--accent-soft); }
+.think-panel {
+  display: none;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(0,0,0,.28);
+  border: 1px solid rgba(255,255,255,.06);
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.think-panel.open { display: block; }
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink .8s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.typing {
+  align-self: flex-start;
+  display: none;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  gap: 5px;
+  align-items: center;
+  max-width: 860px;
+  margin: 0 auto 0 16px;
+}
+.typing.show { display: inline-flex; }
+.typing span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.typing span:nth-child(2) { animation-delay: .15s; }
+.typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes bounce {
+  0%, 80%, 100% { opacity: .3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-4px); }
+}
+.composer {
+  padding: 12px 16px 20px;
+  border-top: 1px solid var(--border);
+  background: rgba(11,13,18,.85);
+  backdrop-filter: blur(12px);
+}
+.composer-inner {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 12px;
+  max-width: 860px;
+  margin: 0 auto;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.composer-inner:focus-within {
+  border-color: rgba(255,138,0,.5);
+  box-shadow: 0 0 0 3px rgba(255,138,0,.08);
+}
+#chatInput {
+  flex: 1;
+  min-height: 44px;
+  max-height: 160px;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  padding: 8px 4px;
+  line-height: 1.45;
+}
+#chatInput::placeholder { color: var(--muted2); }
+#sendBtn {
+  flex: 0 0 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), #ff6a00);
+  color: #111;
+  font-weight: 800;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+#sendBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(255,138,0,.3);
+}
+#sendBtn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.hint {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--muted2);
+}
+.gate {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  padding: 40px 20px;
+}
+.gate h2 { font-size: 22px; font-weight: 700; }
+.gate p { color: var(--muted); max-width: 360px; }
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 2000; display: none;
+  align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  width: min(400px, 94vw);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  box-shadow: var(--shadow);
+}
+.modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.modal p.sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+.modal label { display: block; font-size: 12px; font-weight: 600; color: var(--muted2); margin-bottom: 6px; }
+.modal input {
+  width: 100%; height: 42px; padding: 0 12px; margin-bottom: 14px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); outline: none;
+}
+.modal input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,138,0,.08); }
+.modal .error { color: #fca5a5; font-size: 13px; margin-bottom: 12px; display: none; }
+.modal .error.show { display: block; }
+.modal .actions { display: flex; gap: 10px; margin-top: 8px; }
+.modal .actions button {
+  flex: 1; height: 42px; border: 0; border-radius: 10px; font-weight: 600; cursor: pointer;
+}
+.modal .primary {
+  background: linear-gradient(135deg, var(--accent), #ff6a00);
+  color: #111;
+}
+.modal .secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+.modal .switch { text-align: center; margin-top: 16px; font-size: 13px; color: var(--muted); }
+.modal .switch a { color: var(--accent); cursor: pointer; font-weight: 600; }
+.side-toggle {
+  display: none;
+  width: 36px; height: 36px;
+  border: 0; border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 18px;
+}
+@media (max-width: 800px) {
+  .chat-side {
+    position: fixed;
+    left: 0; top: 68px; bottom: 0;
+    z-index: 900;
+    transform: translateX(-100%);
+    transition: transform .2s ease;
+  }
+  .chat-side.open { transform: translateX(0); }
+  .side-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  .msg { max-width: 100%; }
+  .chat-header { padding: 20px 16px 8px; }
+  .messages { padding: 8px 12px 16px; }
+}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <button class="side-toggle" id="sideToggle" type="button" aria-label="Chats">☰</button>
+    <a class="brand" href="dashboard.html">
+      <img class="brand-logo" src="https://iili.io/fuZmZP9.gif" alt="Flare">
+      <span>Flare<span style="color:var(--accent)">AI</span></span>
+    </a>
+    <div class="nav-right">
+      <a class="nav-icon-btn" href="dashboard.html" title="Deals" aria-label="Deals">
+        <img src="https://iili.io/nAluBTP.png" alt="Deals">
+      </a>
+      <div class="user-chip" id="userChip">
+        <span id="userNameDisplay"></span>
+        <button class="btn-logout" id="logoutBtn" type="button">Logout</button>
+      </div>
+      <button class="btn-login" id="openLogin" type="button">Login</button>
+      <button class="btn-signup" id="openSignup" type="button">Sign up</button>
+    </div>
+  </div>
+</nav>
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <h2>Welcome back</h2>
+    <p class="sub">Log in to chat with Flare AI</p>
+    <div class="error" id="loginError"></div>
+    <label>Username or email</label>
+    <input type="text" id="loginId" placeholder="you@example.com" autocomplete="username">
+    <label>Password</label>
+    <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+    <div class="actions">
+      <button class="secondary" type="button" onclick="closeModals()">Cancel</button>
+      <button class="primary" type="button" id="loginSubmit">Log in</button>
+    </div>
+    <div class="switch">No account? <a id="switchToSignup">Sign up</a></div>
+  </div>
+</div>
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <h2>Create account</h2>
+    <p class="sub">Join Flare to use the AI assistant</p>
+    <div class="error" id="signupError"></div>
+    <label>Username</label>
+    <input type="text" id="signupUsername" placeholder="cooluser" autocomplete="username">
+    <label>Email</label>
+    <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
+    <label>Password (min 8 chars)</label>
+    <input type="password" id="signupPassword" placeholder="••••••••" autocomplete="new-password">
+    <div class="actions">
+      <button class="secondary" type="button" onclick="closeModals()">Cancel</button>
+      <button class="primary" type="button" id="signupSubmit">Create account</button>
+    </div>
+    <div class="switch">Already have an account? <a id="switchToLogin">Log in</a></div>
+  </div>
+</div>
+<div class="modal-overlay" id="verifyModal">
+  <div class="modal">
+    <h2>Enter verification code</h2>
+    <p class="sub">We sent a 6-digit verification code to <strong id="verifyEmailDisplay"></strong>.</p>
+    <div class="error" id="verifyError"></div>
+    <label for="verifyCodeInput">Verification code</label>
+    <input type="text" id="verifyCodeInput" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" style="text-align:center;font-size:24px;font-weight:700;letter-spacing:8px;">
+    <div class="actions">
+      <button class="secondary" type="button" id="resendCodeBtn">Resend code</button>
+      <button class="primary" type="button" id="verifySubmit">Verify account</button>
+    </div>
+    <div class="switch"><a id="closeVerify">Cancel</a></div>
+  </div>
+</div>
+<div id="gate" class="gate">
+  <h2>Login required</h2>
+  <p>Create a free account or log in to chat with Flare AI. Your chats sync across devices when signed in.</p>
+  <div style="display:flex;gap:10px;margin-top:8px;">
+    <button class="btn-login" type="button" onclick="document.getElementById('openLogin').click()">Login</button>
+    <button class="btn-signup" type="button" onclick="document.getElementById('openSignup').click()">Sign up</button>
+  </div>
+</div>
+<div class="app-row" id="appRow">
+  <aside class="chat-side" id="chatSide">
+    <div class="side-top">
+      <button type="button" class="new-chat-btn" id="newChatBtn">+ New chat</button>
+    </div>
+    <div class="chat-list" id="chatList"></div>
+  </aside>
+  <div class="chat-shell" id="chatShell">
+    <div class="chat-header">
+      <h1>Flare AI</h1>
+      <p>Ask anything deals, ideas etc. Powered by Flare.</p>
+    </div>
+    <div class="messages" id="messages"></div>
+    <div class="typing" id="typing"><span></span><span></span><span></span></div>
+    <div class="composer">
+      <div class="composer-inner">
+        <textarea id="chatInput" rows="1" placeholder="Message Flare..." autocomplete="off"></textarea>
+        <button type="button" id="sendBtn" aria-label="Send">→</button>
+      </div>
+      <div class="hint">Enter to send · Shift+Enter for new line</div>
+    </div>
+  </div>
+</div>
+<script>
+const FLARE_API="https://d73b-2a00-23c8-3639-601-dd36-aa07-de7d-6164.ngrok-free.app";
+const TOKEN_KEY="flare_token";
+const USER_KEY="flare_user";
+let currentUser=null;
+let pendingVerifyEmail=null;
+let chatHistory=[];
+let isSending=false;
+let chats=[];
+let currentChatId=null;
+let openMenuId=null;
+async function fetchJson(url,options={}){
+  const response=await fetch(url,options);
+  const raw=await response.text();
+  const contentType=response.headers.get("content-type")||"";
+  if(!contentType.toLowerCase().includes("application/json")){
+    const preview=raw.replace(/\s+/g," ").slice(0,300);
+    throw new Error(`Expected JSON from ${url}, but received HTTP ${response.status} ${contentType||"(no content type)"}. Response: ${preview}`);
+  }
+  let data;
+  try{data=JSON.parse(raw);}catch{throw new Error(`Invalid JSON from ${url}. Response: ${raw.slice(0,300)}`);}
+  if(!response.ok)throw new Error(data?.error||`HTTP ${response.status}`);
+  return data;
+}
+function authHeaders(extra={}){
+  return Object.assign({
+    "Accept":"application/json",
+    "Authorization":`Bearer ${getToken()}`,
+    "ngrok-skip-browser-warning":"true"
+  },extra);
+}
+function getToken(){return localStorage.getItem(TOKEN_KEY);}
+function setAuth(token,user){
+  localStorage.setItem(TOKEN_KEY,token);
+  localStorage.setItem(USER_KEY,JSON.stringify(user));
+  currentUser=user;
+  updateUI();
+  loadChats();
+}
+function clearAuth(){
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+  currentUser=null;
+  chats=[];
+  currentChatId=null;
+  chatHistory=[];
+  updateUI();
+}
+function updateUI(){
+  const userChip=document.getElementById("userChip");
+  const userNameDisplay=document.getElementById("userNameDisplay");
+  const openLogin=document.getElementById("openLogin");
+  const openSignup=document.getElementById("openSignup");
+  const gate=document.getElementById("gate");
+  const appRow=document.getElementById("appRow");
+  if(currentUser){
+    userChip.classList.add("show");
+    userNameDisplay.textContent=currentUser.username;
+    openLogin.style.display="none";
+    openSignup.style.display="none";
+    gate.style.display="none";
+    appRow.classList.add("show");
+  }else{
+    userChip.classList.remove("show");
+    openLogin.style.display="";
+    openSignup.style.display="";
+    gate.style.display="flex";
+    appRow.classList.remove("show");
+  }
+}
+async function checkSession(){
+  const token=getToken();
+  const saved=localStorage.getItem(USER_KEY);
+  if(!token||!saved){clearAuth();return;}
+  try{
+    const data=await fetchJson(`${FLARE_API}/api/auth/me`,{
+      method:"GET",
+      headers:authHeaders(),
+      credentials:"omit"
+    });
+    if(data.success){currentUser=data.user;updateUI();await loadChats();}
+    else clearAuth();
+  }catch{clearAuth();}
+}
+function closeModals(){
+  document.getElementById("loginModal").classList.remove("show");
+  document.getElementById("signupModal").classList.remove("show");
+  document.getElementById("verifyModal").classList.remove("show");
+  document.getElementById("loginError").classList.remove("show");
+  document.getElementById("signupError").classList.remove("show");
+  document.getElementById("verifyError").classList.remove("show");
+}
+function openLoginModal(){closeModals();document.getElementById("loginModal").classList.add("show");}
+function openSignupModal(){closeModals();document.getElementById("signupModal").classList.add("show");}
+function openVerify(email){
+  pendingVerifyEmail=email||"";
+  closeModals();
+  document.getElementById("verifyEmailDisplay").textContent=pendingVerifyEmail;
+  document.getElementById("verifyCodeInput").value="";
+  document.getElementById("verifyError").textContent="";
+  document.getElementById("verifyError").style.color="#fca5a5";
+  document.getElementById("verifyError").classList.remove("show");
+  document.getElementById("verifyModal").classList.add("show");
+  setTimeout(()=>{document.getElementById("verifyCodeInput").focus();},100);
+}
+document.getElementById("openLogin").addEventListener("click",openLoginModal);
+document.getElementById("openSignup").addEventListener("click",openSignupModal);
+document.getElementById("switchToSignup").addEventListener("click",openSignupModal);
+document.getElementById("switchToLogin").addEventListener("click",openLoginModal);
+document.getElementById("closeVerify").addEventListener("click",()=>document.getElementById("verifyModal").classList.remove("show"));
+document.getElementById("loginModal").addEventListener("click",e=>{if(e.target.id==="loginModal")closeModals();});
+document.getElementById("signupModal").addEventListener("click",e=>{if(e.target.id==="signupModal")closeModals();});
+document.getElementById("verifyModal").addEventListener("click",e=>{if(e.target.id==="verifyModal")document.getElementById("verifyModal").classList.remove("show");});
+document.getElementById("loginSubmit").addEventListener("click",async()=>{
+  const err=document.getElementById("loginError");
+  err.classList.remove("show");
+  const login=document.getElementById("loginId").value.trim();
+  const password=document.getElementById("loginPassword").value;
+  try{
+    const data=await fetchJson(`${FLARE_API}/api/auth/login`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
+      body:JSON.stringify({login,password})
+    });
+    const verificationMessage=String(data?.error||data?.message||"").toLowerCase();
+    const needsVerification=Boolean(
+      data?.needs_verification||data?.requires_verification||data?.email_verification_required||
+      verificationMessage.includes("verify your email")||verificationMessage.includes("verification required")||
+      verificationMessage.includes("email not verified")||verificationMessage.includes("email is not verified")
+    );
+    if(needsVerification){
+      const verifyEmail=data?.email||data?.user?.email||login;
+      openVerify(verifyEmail);
+      try{
+        await fetchJson(`${FLARE_API}/api/auth/resend-code`,{
+          method:"POST",
+          headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
+          body:JSON.stringify({email:verifyEmail})
+        });
+      }catch(resendError){}
+      return;
+    }
+    if(!data.success)throw new Error(data.error||"Login failed");
+    setAuth(data.token,data.user);
+    closeModals();
+  }catch(e){
+    err.textContent=e.message;
+    err.classList.add("show");
+  }
+});
+document.getElementById("signupSubmit").addEventListener("click",async()=>{
+  const err=document.getElementById("signupError");
+  err.classList.remove("show");
+  const username=document.getElementById("signupUsername").value.trim();
+  const email=document.getElementById("signupEmail").value.trim();
+  const password=document.getElementById("signupPassword").value;
+  try{
+    const data=await fetchJson(`${FLARE_API}/api/auth/register`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
+      body:JSON.stringify({username,email,password})
+    });
+    if(data.needs_verification){openVerify(data.email||email);return;}
+    if(!data.success)throw new Error(data.error||"Signup failed");
+    setAuth(data.token,data.user);
+    closeModals();
+  }catch(e){
+    err.textContent=e.message;
+    err.classList.add("show");
+  }
+});
+const verifyCodeInput=document.getElementById("verifyCodeInput");
+verifyCodeInput.addEventListener("input",()=>{verifyCodeInput.value=verifyCodeInput.value.replace(/\D/g,"").slice(0,6);});
+verifyCodeInput.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();document.getElementById("verifySubmit").click();}});
+document.getElementById("verifySubmit").addEventListener("click",async()=>{
+  const err=document.getElementById("verifyError");
+  err.classList.remove("show");
+  const code=verifyCodeInput.value.trim();
+  if(!/^\d{6}$/.test(code)){
+    err.textContent="Enter the 6-digit code from your email.";
+    err.style.color="#fca5a5";
+    err.classList.add("show");
+    verifyCodeInput.focus();
+    return;
+  }
+  try{
+    const data=await fetchJson(`${FLARE_API}/api/auth/verify-code`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
+      body:JSON.stringify({email:pendingVerifyEmail,code})
+    });
+    if(!data.success)throw new Error(data.error||"Verification failed");
+    setAuth(data.token,data.user);
+    document.getElementById("verifyModal").classList.remove("show");
+  }catch(e){
+    err.textContent=e.message;
+    err.classList.add("show");
+  }
+});
+document.getElementById("resendCodeBtn").addEventListener("click",async()=>{
+  const err=document.getElementById("verifyError");
+  err.classList.remove("show");
+  try{
+    const data=await fetchJson(`${FLARE_API}/api/auth/resend-code`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
+      body:JSON.stringify({email:pendingVerifyEmail})
+    });
+    if(!data.success)throw new Error(data.error||"Could not resend");
+    err.textContent="New code sent — check your inbox.";
+    err.style.color="#22c55e";
+    err.classList.add("show");
+    verifyCodeInput.value="";
+    verifyCodeInput.focus();
+  }catch(e){
+    err.style.color="#fca5a5";
+    err.textContent=e.message;
+    err.classList.add("show");
+  }
+});
+document.getElementById("logoutBtn").addEventListener("click",async()=>{
+  const token=getToken();
+  if(token){
+    try{
+      await fetch(`${FLARE_API}/api/auth/logout`,{
+        method:"POST",
+        headers:{"Authorization":`Bearer ${token}`,"ngrok-skip-browser-warning":"true"}
+      });
+    }catch{}
+  }
+  clearAuth();
+});
+function escapeHTML(s){
+  return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function splitThinking(raw){
+  let text=String(raw??"");
+  let thinking="";
+  const patterns=[
+    /Thinking\.\.\.\s*([\s\S]*?)\s*\.\.\.done thinking\.\s*/i,
+    /<think>\s*([\s\S]*?)\s*<\/think>\s*/i,
+    /\[thinking\]\s*([\s\S]*?)\s*\[\/thinking\]\s*/i
+  ];
+  for(const re of patterns){
+    const m=text.match(re);
+    if(m){
+      thinking=(m[1]||"").trim();
+      text=text.replace(re,"").trim();
+      break;
+    }
+  }
+  if(!thinking){
+    const m2=text.match(/^Thinking\.\.\.\s*([\s\S]*?)(?:\n{2,}|\r\n{2,})([\s\S]*)$/i);
+    if(m2){
+      thinking=(m2[1]||"").replace(/\.\.\.done thinking\./i,"").trim();
+      text=(m2[2]||"").trim();
+    }
+  }
+  text=text.replace(/^\s+/,"").replace(/\s+$/,"");
+  return {thinking,answer:text};
+}
+function renderMarkdown(src){
+  let text=String(src??"");
+  const blocks=[];
+  text=text.replace(/```(\w*)\n?([\s\S]*?)```/g,(_,lang,code)=>{
+    const id=blocks.length;
+    blocks.push(`<pre><button class="copy-btn" type="button">Copy</button><code class="language-${escapeHTML(lang||"")}">${escapeHTML(code.replace(/\n$/,""))}</code></pre>`);
+    return `\0BLOCK${id}\0`;
+  });
+  text=text.replace(/`([^`\n]+)`/g,(_,c)=>`<code>${escapeHTML(c)}</code>`);
+  text=text.replace(/^######\s+(.+)$/gm,"<h3>$1</h3>");
+  text=text.replace(/^#####\s+(.+)$/gm,"<h3>$1</h3>");
+  text=text.replace(/^####\s+(.+)$/gm,"<h3>$1</h3>");
+  text=text.replace(/^###\s+(.+)$/gm,"<h3>$1</h3>");
+  text=text.replace(/^##\s+(.+)$/gm,"<h2>$1</h2>");
+  text=text.replace(/^#\s+(.+)$/gm,"<h1>$1</h1>");
+  text=text.replace(/\*\*\*(.+?)\*\*\*/g,"<strong><em>$1</em></strong>");
+  text=text.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");
+  text=text.replace(/__(.+?)__/g,"<strong>$1</strong>");
+  text=text.replace(/\*(.+?)\*/g,"<em>$1</em>");
+  text=text.replace(/_(.+?)_/g,"<em>$1</em>");
+  text=text.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  text=text.replace(/^>\s+(.+)$/gm,"<blockquote>$1</blockquote>");
+  text=text.replace(/^---+$/gm,"<hr>");
+  text=text.replace(/^\s*[-*]\s+(.+)$/gm,"<li>$1</li>");
+  text=text.replace(/(?:<li>.*<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
+  text=text.replace(/^\s*\d+\.\s+(.+)$/gm,"<li>$1</li>");
+  text=text.replace(/\n{2,}/g,"</p><p>");
+  text=text.replace(/\n/g,"<br>");
+  text=`<p>${text}</p>`;
+  text=text.replace(/<p>\s*<\/p>/g,"");
+  text=text.replace(/<p>\s*(<h[123]>)/g,"$1");
+  text=text.replace(/(<\/h[123]>)\s*<\/p>/g,"$1");
+  text=text.replace(/<p>\s*(<ul>)/g,"$1");
+  text=text.replace(/(<\/ul>)\s*<\/p>/g,"$1");
+  text=text.replace(/<p>\s*(<pre>)/g,"$1");
+  text=text.replace(/(<\/pre>)\s*<\/p>/g,"$1");
+  text=text.replace(/<p>\s*(<blockquote>)/g,"$1");
+  text=text.replace(/(<\/blockquote>)\s*<\/p>/g,"$1");
+  text=text.replace(/<p>\s*(<hr>)\s*<\/p>/g,"$1");
+  text=text.replace(/\0BLOCK(\d+)\0/g,(_,i)=>blocks[Number(i)]);
+  return text;
+}
+function bindCopyButtons(root){
+  root.querySelectorAll(".copy-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const pre=btn.closest("pre");
+      const code=pre?pre.querySelector("code"):null;
+      if(!code)return;
+      navigator.clipboard.writeText(code.textContent||"").then(()=>{
+        btn.textContent="Copied";
+        setTimeout(()=>{btn.textContent="Copy";},1500);
+      }).catch(()=>{});
+    });
+  });
+}
+function titleFromMessages(messages){
+  const first=messages.find(m=>m.role==="user");
+  if(!first)return "New chat";
+  const t=String(first.content||"").replace(/\s+/g," ").trim();
+  return t.slice(0,48)+(t.length>48?"…":"")||"New chat";
+}
+function renderChatList(){
+  const list=document.getElementById("chatList");
+  list.innerHTML="";
+  if(!chats.length){
+    list.innerHTML='<div class="side-empty">No saved chats yet.<br>Start a conversation.</div>';
+    return;
+  }
+  chats.forEach(chat=>{
+    const item=document.createElement("div");
+    item.className="chat-item"+(chat.id===currentChatId?" active":"");
+    item.dataset.id=String(chat.id);
+    item.innerHTML=`<span class="chat-item-title">${escapeHTML(chat.title||"New chat")}</span><button type="button" class="chat-item-menu-btn" aria-label="Menu">⋯</button><div class="chat-menu"><button type="button" class="delete-chat-btn">Delete chat</button></div>`;
+    const menuBtn=item.querySelector(".chat-item-menu-btn");
+    const menu=item.querySelector(".chat-menu");
+    const delBtn=item.querySelector(".delete-chat-btn");
+    item.addEventListener("click",e=>{
+      if(e.target.closest(".chat-item-menu-btn")||e.target.closest(".chat-menu"))return;
+      openChat(chat.id);
+      document.getElementById("chatSide").classList.remove("open");
+    });
+    menuBtn.addEventListener("click",e=>{
+      e.stopPropagation();
+      const willOpen=!menu.classList.contains("open");
+      document.querySelectorAll(".chat-menu.open").forEach(m=>m.classList.remove("open"));
+      document.querySelectorAll(".chat-item-menu-btn.open").forEach(b=>b.classList.remove("open"));
+      if(willOpen){
+        menu.classList.add("open");
+        menuBtn.classList.add("open");
+        openMenuId=chat.id;
+      }else openMenuId=null;
+    });
+    delBtn.addEventListener("click",e=>{
+      e.stopPropagation();
+      deleteChat(chat.id);
+    });
+    list.appendChild(item);
+  });
+}
+document.addEventListener("click",()=>{
+  document.querySelectorAll(".chat-menu.open").forEach(m=>m.classList.remove("open"));
+  document.querySelectorAll(".chat-item-menu-btn.open").forEach(b=>b.classList.remove("open"));
+  openMenuId=null;
+});
+async function loadChats(){
+  if(!getToken())return;
+  try{
+    const data=await fetchJson(`${FLARE_API}/api/chats`,{method:"GET",headers:authHeaders()});
+    chats=data.chats||[];
+    renderChatList();
+    if(currentChatId){
+      const exists=chats.some(c=>c.id===currentChatId);
+      if(exists)await openChat(currentChatId);
+      else await startNewChat(true);
+    }else if(chats.length){
+      await openChat(chats[0].id);
+    }else{
+      await startNewChat(true);
+    }
+  }catch(e){
+    console.error(e);
+    renderEmptyMessages();
+  }
+}
+function renderEmptyMessages(){
+  const messages=document.getElementById("messages");
+  messages.innerHTML=`<div class="msg assistant"><div class="role">Flare</div><div class="msg-body"><p>Hello! I'm <strong>Flare</strong>. How can I help you today?</p></div></div>`;
+  chatHistory=[];
+}
+function renderHistoryMessages(){
+  const messages=document.getElementById("messages");
+  messages.innerHTML="";
+  if(!chatHistory.length){
+    renderEmptyMessages();
+    return;
+  }
+  chatHistory.forEach(m=>{
+    if(m.role==="user")appendUserMessage(m.content,false);
+    else appendAssistantStatic(m.content);
+  });
+  messages.scrollTop=messages.scrollHeight;
+}
+function appendUserMessage(content,scroll=true){
+  const messages=document.getElementById("messages");
+  const div=document.createElement("div");
+  div.className="msg user";
+  div.innerHTML=`<div class="role">You</div><div class="msg-body"><p>${escapeHTML(content).replace(/\n/g,"<br>")}</p></div>`;
+  messages.appendChild(div);
+  if(scroll)messages.scrollTop=messages.scrollHeight;
+}
+function appendAssistantStatic(content){
+  const messages=document.getElementById("messages");
+  const div=document.createElement("div");
+  div.className="msg assistant";
+  const {thinking,answer}=splitThinking(content);
+  let thinkHtml="";
+  if(thinking){
+    thinkHtml=`<div class="think-wrap"><button type="button" class="think-btn">View thinking</button><div class="think-panel">${escapeHTML(thinking)}</div></div>`;
+  }
+  div.innerHTML=`<div class="role">Flare</div>${thinkHtml}<div class="msg-body">${renderMarkdown(answer||content)}</div>`;
+  const thinkBtn=div.querySelector(".think-btn");
+  const thinkPanel=div.querySelector(".think-panel");
+  if(thinkBtn&&thinkPanel){
+    thinkBtn.addEventListener("click",()=>{
+      const open=thinkPanel.classList.toggle("open");
+      thinkBtn.classList.toggle("open",open);
+      thinkBtn.textContent=open?"Hide thinking":"View thinking";
+    });
+  }
+  bindCopyButtons(div);
+  messages.appendChild(div);
+}
+function createAssistantShell(){
+  const messages=document.getElementById("messages");
+  const div=document.createElement("div");
+  div.className="msg assistant";
+  div.innerHTML=`<div class="role">Flare</div><div class="think-wrap" style="display:none"><button type="button" class="think-btn">View thinking</button><div class="think-panel"></div></div><div class="msg-body"></div>`;
+  messages.appendChild(div);
+  const thinkBtn=div.querySelector(".think-btn");
+  const thinkPanel=div.querySelector(".think-panel");
+  thinkBtn.addEventListener("click",()=>{
+    const open=thinkPanel.classList.toggle("open");
+    thinkBtn.classList.toggle("open",open);
+    thinkBtn.textContent=open?"Hide thinking":"View thinking";
+  });
+  messages.scrollTop=messages.scrollHeight;
+  return {
+    el:div,
+    body:div.querySelector(".msg-body"),
+    thinkWrap:div.querySelector(".think-wrap"),
+    thinkPanel,
+    thinkBtn
+  };
+}
+function setThinking(shell,thinking){
+  if(!thinking)return;
+  shell.thinkWrap.style.display="block";
+  shell.thinkPanel.textContent=thinking;
+}
+function typeAnswer(shell,answer,onDone){
+  const full=String(answer||"");
+  let i=0;
+  const step=()=>{
+    i=Math.min(i+2,full.length);
+    const slice=full.slice(0,i);
+    shell.body.innerHTML=renderMarkdown(slice)+(i<full.length?'<span class="cursor"></span>':"");
+    bindCopyButtons(shell.body);
+    document.getElementById("messages").scrollTop=document.getElementById("messages").scrollHeight;
+    if(i<full.length){
+      requestAnimationFrame(()=>setTimeout(step,12));
+    }else{
+      shell.body.innerHTML=renderMarkdown(full);
+      bindCopyButtons(shell.body);
+      if(onDone)onDone();
+    }
+  };
+  step();
+}
+async function streamAI(messages,onToken,onDone,onError){
+  const token=getToken();
+  try{
+    const response=await fetch(`${FLARE_API}/api/ai`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Accept":"text/event-stream, application/json",
+        "Authorization":`Bearer ${token}`,
+        "ngrok-skip-browser-warning":"true"
+      },
+      body:JSON.stringify({messages,stream:true})
+    });
+    const ct=response.headers.get("content-type")||"";
+    if(ct.includes("application/json")){
+      const data=await response.json();
+      if(!response.ok||data.error)throw new Error(data.error||`HTTP ${response.status}`);
+      const reply=data.reply||data.message||data.content||"";
+      onToken(reply);
+      onDone(reply);
+      return;
+    }
+    if(!response.ok){
+      const t=await response.text();
+      throw new Error(t.slice(0,200)||`HTTP ${response.status}`);
+    }
+    const reader=response.body.getReader();
+    const decoder=new TextDecoder();
+    let buffer="";
+    let full="";
+    while(true){
+      const {value,done}=await reader.read();
+      if(done)break;
+      buffer+=decoder.decode(value,{stream:true});
+      const parts=buffer.split("\n");
+      buffer=parts.pop()||"";
+      for(const line of parts){
+        const trimmed=line.trim();
+        if(!trimmed.startsWith("data:"))continue;
+        const payload=trimmed.slice(5).trim();
+        if(!payload||payload==="[DONE]")continue;
+        let obj;
+        try{obj=JSON.parse(payload);}catch{continue;}
+        if(obj.error)throw new Error(obj.error);
+        if(obj.token){
+          full+=obj.token;
+          onToken(full);
+        }
+        if(obj.done){
+          onDone(full);
+          return;
+        }
+      }
+    }
+    onDone(full);
+  }catch(e){
+    onError(e);
+  }
+}
+async function saveCurrentChat(){
+  if(!getToken()||!currentChatId)return;
+  const title=titleFromMessages(chatHistory);
+  try{
+    await fetchJson(`${FLARE_API}/api/chats/${currentChatId}`,{
+      method:"POST",
+      headers:authHeaders({"Content-Type":"application/json"}),
+      body:JSON.stringify({title,messages:chatHistory})
+    });
+    const c=chats.find(x=>x.id===currentChatId);
+    if(c){c.title=title;c.updated_at=new Date().toISOString();}
+    chats.sort((a,b)=>String(b.updated_at||"").localeCompare(String(a.updated_at||"")));
+    renderChatList();
+  }catch(e){console.error("[FLARE] save chat failed",e);}
+}
+async function startNewChat(silent){
+  if(!getToken())return;
+  try{
+    const data=await fetchJson(`${FLARE_API}/api/chats`,{
+      method:"POST",
+      headers:authHeaders({"Content-Type":"application/json"}),
+      body:JSON.stringify({title:"New chat",messages:[]})
+    });
+    const chat=data.chat;
+    chats.unshift({id:chat.id,title:chat.title,created_at:chat.created_at,updated_at:chat.updated_at});
+    currentChatId=chat.id;
+    chatHistory=[];
+    renderChatList();
+    renderEmptyMessages();
+    if(!silent)document.getElementById("chatInput").focus();
+  }catch(e){
+    console.error(e);
+    currentChatId=null;
+    chatHistory=[];
+    renderEmptyMessages();
+  }
+}
+async function openChat(id){
+  if(!getToken())return;
+  try{
+    const data=await fetchJson(`${FLARE_API}/api/chats/${id}`,{method:"GET",headers:authHeaders()});
+    const chat=data.chat;
+    currentChatId=chat.id;
+    chatHistory=Array.isArray(chat.messages)?chat.messages:[];
+    renderChatList();
+    renderHistoryMessages();
+  }catch(e){
+    console.error(e);
+  }
+}
+async function deleteChat(id){
+  if(!getToken())return;
+  try{
+    await fetchJson(`${FLARE_API}/api/chats/${id}`,{method:"POST",headers:authHeaders({"Content-Type":"application/json"}),body:JSON.stringify({action:"delete"})});
+    chats=chats.filter(c=>c.id!==id);
+    if(currentChatId===id){
+      currentChatId=null;
+      if(chats.length)await openChat(chats[0].id);
+      else await startNewChat(true);
+    }else renderChatList();
+  }catch(e){
+    console.error(e);
+  }
+}
+document.getElementById("newChatBtn").addEventListener("click",()=>startNewChat(false));
+document.getElementById("sideToggle").addEventListener("click",()=>{
+  document.getElementById("chatSide").classList.toggle("open");
+});
+async function sendMessage(){
+  if(isSending)return;
+  const input=document.getElementById("chatInput");
+  const text=input.value.trim();
+  if(!text)return;
+  if(!getToken()){openLoginModal();return;}
+  if(!currentChatId)await startNewChat(true);
+  isSending=true;
+  document.getElementById("sendBtn").disabled=true;
+  input.value="";
+  input.style.height="auto";
+  if(!chatHistory.length){
+    const welcome=document.querySelector("#messages .msg.assistant");
+    if(welcome&&chatHistory.length===0)document.getElementById("messages").innerHTML="";
+  }
+  appendUserMessage(text);
+  chatHistory.push({role:"user",content:text});
+  await saveCurrentChat();
+  document.getElementById("typing").classList.add("show");
+  document.getElementById("messages").scrollTop=document.getElementById("messages").scrollHeight;
+  const shell=createAssistantShell();
+  let lastRaw="";
+  let finished=false;
+  let streamedAny=false;
+  const finish=(raw)=>{
+    if(finished)return;
+    finished=true;
+    document.getElementById("typing").classList.remove("show");
+    const {thinking,answer}=splitThinking(raw||lastRaw);
+    setThinking(shell,thinking);
+    const finalText=answer||"Sorry, I couldn't generate a response.";
+    chatHistory.push({role:"assistant",content:finalText});
+    saveCurrentChat();
+    const unlock=()=>{
+      isSending=false;
+      document.getElementById("sendBtn").disabled=false;
+      input.focus();
+    };
+    if(streamedAny){
+      shell.body.innerHTML=renderMarkdown(finalText);
+      bindCopyButtons(shell.body);
+      document.getElementById("messages").scrollTop=document.getElementById("messages").scrollHeight;
+      unlock();
+    }else{
+      typeAnswer(shell,finalText,unlock);
+    }
+  };
+  await streamAI(
+    chatHistory.slice(0,-1).concat([{role:"user",content:text}]),
+    (partial)=>{
+      lastRaw=partial;
+      document.getElementById("typing").classList.remove("show");
+      const {thinking,answer}=splitThinking(partial);
+      setThinking(shell,thinking);
+      if(answer){
+        streamedAny=true;
+        shell.body.innerHTML=renderMarkdown(answer)+'<span class="cursor"></span>';
+        bindCopyButtons(shell.body);
+        document.getElementById("messages").scrollTop=document.getElementById("messages").scrollHeight;
+      }
+    },
+    (full)=>finish(full),
+    (e)=>{
+      document.getElementById("typing").classList.remove("show");
+      shell.body.innerHTML=renderMarkdown(`**Error:** ${e.message||"Could not reach Flare AI."}`);
+      isSending=false;
+      document.getElementById("sendBtn").disabled=false;
+      input.focus();
+    }
+  );
+}
+const chatInput=document.getElementById("chatInput");
+chatInput.addEventListener("input",()=>{
+  chatInput.style.height="auto";
+  chatInput.style.height=Math.min(chatInput.scrollHeight,160)+"px";
+});
+chatInput.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&!e.shiftKey){
+    e.preventDefault();
+    sendMessage();
+  }
+});
+document.getElementById("sendBtn").addEventListener("click",sendMessage);
+checkSession();
+</script>
+</body>
+</html>
