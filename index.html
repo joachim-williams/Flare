@@ -130,7 +130,7 @@
       color: #fca5a5; font-size: 0.85rem; margin-bottom: 12px; display: none;
     }
     .modal .error.show { display: block; }
-    .modal .actions { display: flex; gap: 10px; margin-top: 8px; }
+    .modal .actions { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
     .modal .actions button {
       flex: 1; height: 42px; border: 0; border-radius: 10px;
       font-weight: 600; cursor: pointer; font-size: 0.95rem;
@@ -454,7 +454,28 @@
       <button class="secondary" type="button" onclick="closeModals()">Cancel</button>
       <button class="primary" type="button" id="loginSubmit">Log in</button>
     </div>
+    <div class="switch"><a id="forgotPasswordLink">Forgot password?</a></div>
     <div class="switch">No account? <a id="switchToSignup">Sign up</a></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="resetPasswordModal">
+  <div class="modal">
+    <h2>Reset your password</h2>
+    <p class="sub">Enter your account email and we’ll send you a 6-digit reset code.</p>
+    <div class="error" id="resetPasswordError"></div>
+    <label>Email</label>
+    <input type="email" id="resetPasswordEmail" placeholder="flare@example.com" autocomplete="email">
+    <label>Reset code</label>
+    <input type="text" id="resetPasswordCode" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+    <label>New password</label>
+    <input type="password" id="resetPasswordNew" placeholder="••••••••" autocomplete="new-password">
+    <div class="actions">
+      <button class="secondary" type="button" id="closeResetPassword">Cancel</button>
+      <button class="primary" type="button" id="sendResetPasswordCode">Send code</button>
+      <button class="primary" type="button" id="confirmResetPassword" style="display:none">Reset password</button>
+    </div>
+    <div class="switch"><a id="backToLoginFromReset">Back to login</a></div>
   </div>
 </div>
 
@@ -474,6 +495,21 @@
       <button class="primary" type="button" id="signupSubmit">Create account</button>
     </div>
     <div class="switch">Already have an account? <a id="switchToLogin">Log in</a></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="twofaModal">
+  <div class="modal">
+    <h2>Two-factor authentication</h2>
+    <p class="sub">Enter the 6-digit code we sent to your email to finish signing in.</p>
+    <div class="error" id="twofaError"></div>
+    <label for="twofaCode">Authentication code</label>
+    <input type="text" id="twofaCode" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" style="text-align:center;font-size:24px;font-weight:700;letter-spacing:8px;">
+    <div class="actions">
+      <button class="secondary" type="button" id="resendTwofa">Resend code</button>
+      <button class="primary" type="button" id="verifyTwofa">Verify &amp; sign in</button>
+    </div>
+    <div class="switch"><a id="cancelTwofa">Cancel</a></div>
   </div>
 </div>
 
@@ -735,17 +771,33 @@ async function checkSession() {
 }
 
 let pendingVerifyEmail = null;
+let resetPasswordCodeSent = false;
+let pendingTwofaEmail = "";
 
 function closeModals() {
   document.getElementById("loginModal").classList.remove("show");
   document.getElementById("signupModal").classList.remove("show");
   document.getElementById("verifyModal").classList.remove("show");
+  document.getElementById("resetPasswordModal").classList.remove("show");
+  document.getElementById("twofaModal").classList.remove("show");
   document.getElementById("loginError").classList.remove("show");
   document.getElementById("signupError").classList.remove("show");
   document.getElementById("verifyError").classList.remove("show");
 }
 function openLogin() { closeModals(); document.getElementById("loginModal").classList.add("show"); }
 function openSignup() { closeModals(); document.getElementById("signupModal").classList.add("show"); }
+function openResetPassword() {
+  closeModals();
+  resetPasswordCodeSent = false;
+  document.getElementById("resetPasswordEmail").value = document.getElementById("loginId").value.includes("@") ? document.getElementById("loginId").value.trim() : "";
+  document.getElementById("resetPasswordCode").value = "";
+  document.getElementById("resetPasswordNew").value = "";
+  document.getElementById("resetPasswordError").classList.remove("show");
+  document.getElementById("sendResetPasswordCode").style.display = "block";
+  document.getElementById("confirmResetPassword").style.display = "none";
+  document.getElementById("resetPasswordModal").classList.add("show");
+  setTimeout(() => document.getElementById("resetPasswordEmail").focus(), 100);
+}
 function openVerify(email) {
   pendingVerifyEmail = email || "";
   closeModals();
@@ -765,11 +817,61 @@ document.getElementById("footerSignup").addEventListener("click", e => { e.preve
 document.getElementById("footerLogin").addEventListener("click", e => { e.preventDefault(); openLogin(); });
 document.getElementById("switchToSignup").addEventListener("click", openSignup);
 document.getElementById("switchToLogin").addEventListener("click", openLogin);
+document.getElementById("forgotPasswordLink").addEventListener("click", openResetPassword);
+document.getElementById("closeResetPassword").addEventListener("click", closeModals);
+document.getElementById("backToLoginFromReset").addEventListener("click", openLogin);
+document.getElementById("resetPasswordModal").addEventListener("click", e => { if (e.target.id === "resetPasswordModal") closeModals(); });
 document.getElementById("loginModal").addEventListener("click", e => { if (e.target.id === "loginModal") closeModals(); });
+document.getElementById("twofaModal").addEventListener("click", e => { if (e.target.id === "twofaModal") closeModals(); });
 document.getElementById("signupModal").addEventListener("click", e => { if (e.target.id === "signupModal") closeModals(); });
 document.getElementById("verifyModal").addEventListener("click", e => { if (e.target.id === "verifyModal") closeModals(); });
 document.getElementById("closeVerify").addEventListener("click", closeModals);
+document.getElementById("cancelTwofa").addEventListener("click", closeModals);
 document.getElementById("goDashboard").addEventListener("click", () => { window.location.href = "dashboard.html"; });
+
+function openTwofa(email) {
+  pendingTwofaEmail = email || document.getElementById("loginId").value.trim();
+  document.getElementById("twofaCode").value = "";
+  document.getElementById("twofaError").classList.remove("show");
+  document.getElementById("twofaModal").classList.add("show");
+  setTimeout(() => document.getElementById("twofaCode").focus(), 50);
+}
+
+document.getElementById("verifyTwofa").addEventListener("click", async () => {
+  const err = document.getElementById("twofaError");
+  err.classList.remove("show");
+  const code = document.getElementById("twofaCode").value.trim();
+  if (!/^\d{6}$/.test(code)) { err.textContent = "Enter the 6-digit code."; err.classList.add("show"); return; }
+  try {
+    const r = await fetch(`${FLARE_API}/api/auth/2fa/verify`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+      body: JSON.stringify({ email: pendingTwofaEmail, code })
+    });
+    const data = await r.json();
+    if (!data.success) throw new Error(data.error || "Invalid 2FA code");
+    if (!data.token) throw new Error("2FA verified, but the server did not return a login token.");
+    setAuth(data.token, data.user);
+    closeModals();
+  } catch (e) { err.textContent = e.message; err.classList.add("show"); }
+});
+
+document.getElementById("resendTwofa").addEventListener("click", async () => {
+  const err = document.getElementById("twofaError");
+  try {
+    const r = await fetch(`${FLARE_API}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+      body: JSON.stringify({ login: document.getElementById("loginId").value.trim(), password: document.getElementById("loginPassword").value })
+    });
+    const data = await r.json();
+    if (!data.needs_2fa) throw new Error(data.error || "Could not resend the code.");
+    pendingTwofaEmail = data.email || pendingTwofaEmail;
+    err.textContent = "A new code was sent to your email.";
+    err.style.color = "#3dd68c";
+    err.classList.add("show");
+  } catch (e) { err.style.color = ""; err.textContent = e.message; err.classList.add("show"); }
+});
 
 document.getElementById("loginSubmit").addEventListener("click", async () => {
   const err = document.getElementById("loginError");
@@ -797,6 +899,12 @@ document.getElementById("loginSubmit").addEventListener("click", async () => {
       return;
     }
 
+    if (data.needs_2fa) {
+      pendingTwofaEmail = data.email || login;
+      openTwofa(pendingTwofaEmail);
+      return;
+    }
+
     if (!data.success) throw new Error(data.error || "Login failed");
     setAuth(data.token, data.user);
     closeModals();
@@ -805,6 +913,59 @@ document.getElementById("loginSubmit").addEventListener("click", async () => {
     err.classList.add("show");
   }
 });
+
+document.getElementById("sendResetPasswordCode").addEventListener("click", async () => {
+  const err = document.getElementById("resetPasswordError");
+  err.classList.remove("show");
+  const email = document.getElementById("resetPasswordEmail").value.trim();
+  if (!email) { err.textContent = "Enter your account email."; err.classList.add("show"); return; }
+  try {
+    const r = await fetch(`${FLARE_API}/api/auth/password-reset/request`, {
+      method: "POST", headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+      body: JSON.stringify({ email })
+    });
+    const data = await r.json();
+    if (!data.success) throw new Error(data.error || "Could not send reset code");
+    resetPasswordCodeSent = true;
+    err.style.color = "#3dd68c";
+    err.textContent = "Reset code sent — check your email.";
+    err.classList.add("show");
+    document.getElementById("sendResetPasswordCode").style.display = "none";
+    document.getElementById("confirmResetPassword").style.display = "block";
+    document.getElementById("resetPasswordCode").focus();
+  } catch (e) {
+    err.style.color = "#fca5a5"; err.textContent = e.message; err.classList.add("show");
+  }
+});
+
+document.getElementById("confirmResetPassword").addEventListener("click", async () => {
+  const err = document.getElementById("resetPasswordError");
+  err.classList.remove("show");
+  const email = document.getElementById("resetPasswordEmail").value.trim();
+  const code = document.getElementById("resetPasswordCode").value.trim();
+  const newPassword = document.getElementById("resetPasswordNew").value;
+  if (!/^\d{6}$/.test(code)) { err.textContent = "Enter the 6-digit reset code from your email."; err.classList.add("show"); return; }
+  if (newPassword.length < 8) { err.textContent = "New password must be at least 8 characters."; err.classList.add("show"); return; }
+  try {
+    const r = await fetch(`${FLARE_API}/api/auth/password-reset/confirm`, {
+      method: "POST", headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+      body: JSON.stringify({ email, code, new_password: newPassword })
+    });
+    const data = await r.json();
+    if (!data.success) throw new Error(data.error || "Could not reset password");
+    closeModals();
+    openLogin();
+    const loginErr = document.getElementById("loginError");
+    loginErr.style.color = "#3dd68c";
+    loginErr.textContent = "Password reset successfully. You can now log in.";
+    loginErr.classList.add("show");
+    document.getElementById("loginPassword").value = "";
+  } catch (e) {
+    err.style.color = "#fca5a5"; err.textContent = e.message; err.classList.add("show");
+  }
+});
+
+['resetPasswordCode'].forEach(id => document.getElementById(id).addEventListener("input", e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6); }));
 
 document.getElementById("signupSubmit").addEventListener("click", async () => {
   const err = document.getElementById("signupError");
