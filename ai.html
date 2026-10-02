@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -44,7 +43,6 @@ button { cursor: pointer; border: 0; background: none; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
 
-/* ========== SIDEBAR ========== */
 .sidebar {
   width: 260px;
   flex-shrink: 0;
@@ -76,11 +74,7 @@ button { cursor: pointer; border: 0; background: none; }
 }
 .side-btn:hover { background: var(--sidebar-hover); }
 .side-btn img, .side-btn svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  object-fit: contain;
-  opacity: 0.85;
+  width: 18px; height: 18px; flex-shrink: 0; object-fit: contain; opacity: 0.85;
 }
 .side-btn.new-chat {
   border: 1px solid var(--border);
@@ -110,7 +104,6 @@ button { cursor: pointer; border: 0; background: none; }
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
-
 .chat-list {
   flex: 1;
   overflow-y: auto;
@@ -130,402 +123,290 @@ button { cursor: pointer; border: 0; background: none; }
 .chat-item:hover { background: var(--sidebar-hover); }
 .chat-item.active { background: rgba(255,255,255,0.08); }
 .chat-item-title {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 13.5px;
-  font-weight: 400;
-  color: var(--text);
+  flex: 1; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 13.5px; font-weight: 400; color: var(--text);
 }
 .chat-item-menu-btn {
-  flex: 0 0 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  color: var(--muted2);
-  font-size: 15px;
-  line-height: 1;
-  opacity: 0;
-  display: grid;
-  place-items: center;
+  flex: 0 0 28px; width: 28px; height: 28px; border-radius: 8px;
+  color: var(--muted2); font-size: 15px; line-height: 1; opacity: 0;
+  display: grid; place-items: center;
   transition: opacity .1s, background .1s, color .1s;
 }
 .chat-item:hover .chat-item-menu-btn,
 .chat-item-menu-btn.open { opacity: 1; }
 .chat-item-menu-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 .chat-menu {
-  position: absolute;
-  right: 8px;
-  top: 38px;
-  z-index: 50;
-  min-width: 148px;
-  background: #2a2a2a;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  padding: 4px;
-  display: none;
+  position: absolute; right: 8px; top: 38px; z-index: 50;
+  min-width: 148px; background: #2a2a2a;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+  box-shadow: var(--shadow); padding: 4px; display: none;
 }
 .chat-menu.open { display: block; }
 .chat-menu button {
-  width: 100%;
-  text-align: left;
-  padding: 9px 12px;
-  border-radius: 8px;
-  color: #f87171;
-  font-size: 13px;
-  font-weight: 500;
+  width: 100%; text-align: left; padding: 9px 12px; border-radius: 8px;
+  color: #f87171; font-size: 13px; font-weight: 500;
 }
 .chat-menu button:hover { background: rgba(239,68,68,0.12); }
 .side-empty {
-  padding: 28px 16px;
-  text-align: center;
-  color: var(--muted2);
-  font-size: 13px;
-  line-height: 1.45;
+  padding: 28px 16px; text-align: center; color: var(--muted2);
+  font-size: 13px; line-height: 1.45;
 }
-
 .sidebar-footer {
-  padding: 10px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 10px; border-top: 1px solid rgba(255,255,255,0.06);
 }
 .user-row {
-  display: none;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  transition: background .12s;
+  display: none; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 10px; transition: background .12s;
 }
 .user-row.show { display: flex; }
 .user-row:hover { background: var(--sidebar-hover); }
 .user-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  width: 28px; height: 28px; border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), #ff6a00);
-  color: #111;
-  font-weight: 700;
-  font-size: 12px;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
+  color: #111; font-weight: 700; font-size: 12px;
+  display: grid; place-items: center; flex-shrink: 0;
 }
 .user-meta { flex: 1; min-width: 0; }
 .user-meta .name {
-  font-size: 13px;
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 13px; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.user-meta .plan {
-  font-size: 11px;
-  color: var(--muted2);
-}
+.user-meta .plan { font-size: 11px; color: var(--muted2); }
 .btn-logout-side {
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--muted2);
-  padding: 4px 8px;
-  border-radius: 6px;
+  font-size: 11.5px; font-weight: 600; color: var(--muted2);
+  padding: 4px 8px; border-radius: 6px;
 }
 .btn-logout-side:hover { color: var(--text); background: rgba(255,255,255,0.06); }
 
-/* ========== MAIN ========== */
 .main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-  background: var(--bg);
-  position: relative;
+  flex: 1; display: flex; flex-direction: column;
+  min-width: 0; min-height: 0; background: var(--bg); position: relative;
 }
-
 .topbar {
-  height: 48px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  padding: 0 14px;
-  gap: 10px;
+  height: 48px; flex-shrink: 0; display: flex; align-items: center;
+  padding: 0 14px; gap: 10px;
 }
 .mobile-menu {
-  display: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  color: var(--muted);
-  font-size: 18px;
-  place-items: center;
+  display: none; width: 36px; height: 36px; border-radius: 8px;
+  color: var(--muted); font-size: 18px; place-items: center;
 }
 .mobile-menu:hover { background: rgba(255,255,255,0.06); color: var(--text); }
-.topbar-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  opacity: 0.9;
-}
-.topbar-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.topbar-title { font-size: 14px; font-weight: 600; color: var(--text); opacity: 0.9; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 .auth-btns { display: flex; gap: 6px; }
 .btn-login, .btn-signup {
-  padding: 7px 14px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 600;
 }
 .btn-login { color: var(--muted); }
 .btn-login:hover { color: var(--text); background: rgba(255,255,255,0.06); }
 .btn-signup {
-  background: linear-gradient(135deg, var(--accent), #ff6a00);
-  color: #111;
+  background: linear-gradient(135deg, var(--accent), #ff6a00); color: #111;
 }
 .btn-signup:hover { filter: brightness(1.06); }
 
 .messages-wrap {
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 12px;
+  flex: 1; overflow-y: auto; min-height: 0;
+  display: flex; flex-direction: column; padding-bottom: 12px;
 }
 .messages {
-  flex: 1;
-  width: 100%;
-  max-width: 768px;
-  margin: 0 auto;
-  padding: 12px 16px 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  flex: 1; width: 100%; max-width: 768px; margin: 0 auto;
+  padding: 12px 16px 48px; display: flex; flex-direction: column; gap: 18px;
 }
 .empty-state {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 40px 20px 100px;
-  gap: 16px;
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: 40px 20px 100px; gap: 16px;
 }
-.empty-icon {
-  width: 56px;
-  height: 56px;
-  opacity: 0.9;
-}
-.empty-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 12px;
-}
+.empty-icon { width: 56px; height: 56px; opacity: 0.9; }
+.empty-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
 .empty-state h1 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--text);
+  font-size: 1.75rem; font-weight: 600; letter-spacing: -0.03em; color: var(--text);
 }
-.empty-state p {
-  color: var(--muted);
-  font-size: 14.5px;
-  max-width: 360px;
-}
+.empty-state p { color: var(--muted); font-size: 14.5px; max-width: 360px; }
 
-.msg {
-  display: flex;
-  gap: 14px;
-  max-width: 100%;
-  line-height: 1.6;
-}
-.msg.user {
-  flex-direction: row-reverse;
-  justify-content: flex-start;
-}
-.msg.user .msg-avatar {
-  display: none;
-}
+.msg { display: flex; gap: 14px; max-width: 100%; line-height: 1.6; }
+.msg.user { flex-direction: row-reverse; justify-content: flex-start; }
+.msg.user .msg-avatar { display: none; }
 .msg.user .msg-content {
-  flex: 0 1 auto;
-  width: fit-content;
-  max-width: 85%;
-  background: #2f2f2f;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 18px;
-  padding: 10px 14px;
+  flex: 0 1 auto; width: fit-content; max-width: 85%;
+  background: #2f2f2f; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px; padding: 10px 14px;
 }
-.msg.user .msg-role {
-  display: none;
-}
+.msg.user .msg-role { display: none; }
 .msg-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  font-weight: 700;
-  margin-top: 2px;
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: grid; place-items: center; font-size: 12px; font-weight: 700; margin-top: 2px;
 }
-.msg.assistant .msg-avatar {
-  background: #3a3a3a;
-  overflow: hidden;
-}
-.msg.assistant .msg-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.msg.assistant .msg-avatar { background: #3a3a3a; overflow: hidden; }
+.msg.assistant .msg-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .msg-content { flex: 1; min-width: 0; }
-.msg-role {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  color: var(--text);
+.msg-role { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+.msg-role .agent-tag {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  color: var(--accent); background: var(--accent-soft);
+  padding: 2px 8px; border-radius: 6px; margin-left: 6px; letter-spacing: 0.02em;
 }
-.msg-body {
-  font-size: 15px;
-  color: var(--text);
-  word-break: break-word;
-}
+.msg-body { font-size: 15px; color: var(--text); word-break: break-word; }
 .msg-body p { margin: 0 0 10px; }
 .msg-body p:last-child { margin-bottom: 0; }
 .msg-body strong, .msg-body b { font-weight: 700; }
 .msg-body em, .msg-body i { font-style: italic; }
 .msg-body code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.88em;
-  background: rgba(255,255,255,0.08);
-  border-radius: 5px;
-  padding: 1px 5px;
-  color: #ffd29a;
+  font-size: 0.88em; background: rgba(255,255,255,0.08);
+  border-radius: 5px; padding: 1px 5px; color: #ffd29a;
 }
 .msg-body pre {
-  margin: 12px 0;
-  padding: 14px 16px;
-  background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  overflow-x: auto;
-  position: relative;
+  margin: 12px 0; padding: 14px 16px; background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+  overflow-x: auto; position: relative;
 }
 .msg-body pre code {
-  background: transparent;
-  border: 0;
-  padding: 0;
-  color: #e8ecf4;
-  font-size: 13px;
-  line-height: 1.5;
-  display: block;
-  white-space: pre;
+  background: transparent; border: 0; padding: 0; color: #e8ecf4;
+  font-size: 13px; line-height: 1.5; display: block; white-space: pre;
 }
 .msg-body a { color: var(--accent); text-decoration: none; font-weight: 500; }
 .msg-body a:hover { text-decoration: underline; }
 .msg-body ul, .msg-body ol { margin: 8px 0 10px 1.25em; }
 .msg-body li { margin-bottom: 4px; }
 .msg-body h1, .msg-body h2, .msg-body h3 {
-  font-weight: 700;
-  letter-spacing: -.02em;
-  margin: 14px 0 8px;
+  font-weight: 700; letter-spacing: -.02em; margin: 14px 0 8px;
 }
 .msg-body h1 { font-size: 1.3em; }
 .msg-body h2 { font-size: 1.15em; }
 .msg-body h3 { font-size: 1.05em; }
 .msg-body blockquote {
-  border-left: 3px solid var(--accent);
-  margin: 10px 0;
-  padding: 4px 0 4px 14px;
-  color: var(--muted);
+  border-left: 3px solid var(--accent); margin: 10px 0;
+  padding: 4px 0 4px 14px; color: var(--muted);
 }
-.msg-body hr {
-  border: 0;
-  border-top: 1px solid var(--border);
-  margin: 14px 0;
-}
+.msg-body hr { border: 0; border-top: 1px solid var(--border); margin: 14px 0; }
 .copy-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.06);
-  color: var(--muted);
-  cursor: pointer;
+  position: absolute; top: 8px; right: 8px; font-size: 11px; font-weight: 600;
+  padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06); color: var(--muted); cursor: pointer;
 }
 .copy-btn:hover { color: var(--text); background: rgba(255,138,0,0.15); border-color: rgba(255,138,0,0.3); }
+
 .think-wrap { margin-bottom: 8px; }
 .think-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.04);
-  color: var(--muted2);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .03em;
-  text-transform: uppercase;
-  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04); color: var(--muted2);
+  font-size: 11px; font-weight: 600; letter-spacing: .03em;
+  text-transform: uppercase; cursor: pointer;
   transition: color .12s, border-color .12s, background .12s;
 }
 .think-btn:hover { color: var(--muted); border-color: rgba(255,255,255,0.14); }
 .think-btn.open { color: var(--accent); border-color: rgba(255,138,0,0.3); background: var(--accent-soft); }
 .think-panel {
-  display: none;
-  margin-top: 8px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.06);
-  color: var(--muted);
-  font-size: 12.5px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  max-height: 220px;
-  overflow-y: auto;
+  display: none; margin-top: 8px; padding: 10px 12px; border-radius: 10px;
+  background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06);
+  color: var(--muted); font-size: 12.5px; line-height: 1.5;
+  white-space: pre-wrap; max-height: 220px; overflow-y: auto;
 }
 .think-panel.open { display: block; }
+
+.phase-banner {
+  font-size: 13px; font-weight: 600; color: var(--accent);
+  margin: 4px 0 10px; letter-spacing: -0.01em;
+}
+.agent-ball-row {
+  display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start;
+  margin: 10px 0 14px; min-height: 64px;
+}
+.agent-ball-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; max-width: 88px;
+}
+.ball-status {
+  font-size: 10px; line-height: 1.25; color: var(--muted);
+  text-align: center; min-height: 2.4em; max-width: 88px;
+}
+.agent-ball {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 12px; font-weight: 800; color: #111;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.12), 0 4px 14px rgba(0,0,0,0.35);
+  position: relative; transition: transform .2s, box-shadow .2s;
+}
+.agent-ball:not(.live) { opacity: 0.45; filter: grayscale(0.25); }
+.agent-ball.live {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.2), 0 0 18px currentColor;
+  animation: ball-bounce 1s ease-in-out infinite;
+}
+.agent-ball .ball-tip {
+  position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+  background: #2a2a2a; border: 1px solid rgba(255,255,255,0.12); color: var(--text);
+  font-size: 10px; font-weight: 600; padding: 3px 7px; border-radius: 6px;
+  white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s;
+}
+.agent-ball:hover .ball-tip, .agent-ball.live .ball-tip { opacity: 1; }
+@keyframes ball-bounce {
+  0%, 100% { transform: scale(1.12) translateY(0); }
+  50% { transform: scale(1.12) translateY(-4px); }
+}
+.agent-card {
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+  background: rgba(0,0,0,0.2); overflow: hidden; margin-bottom: 8px;
+}
+.agent-card-header {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer; user-select: none;
+}
+.agent-card-header .dot {
+  width: 14px; height: 14px; border-radius: 50%; background: var(--accent);
+  animation: pulse 1.2s ease-in-out infinite;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.08), 0 0 12px currentColor; flex-shrink: 0;
+}
+.agent-card-header.done .dot { animation: none; opacity: 0.95; }
+.agent-card-header .name { color: var(--text); }
+.agent-card-header .chev { margin-left: auto; opacity: 0.5; transition: transform .15s; }
+.agent-card-header.open .chev { transform: rotate(90deg); }
+.agent-card-body {
+  padding: 10px 12px; font-size: 13px; color: var(--muted);
+  max-height: 180px; overflow-y: auto; white-space: pre-wrap; display: none;
+}
+.agent-card-body.open { display: block; }
+.agent-think {
+  padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: none;
+}
+.agent-think-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--muted2); margin-bottom: 4px;
+}
+.agent-think-body {
+  font-size: 12px; color: var(--muted); white-space: pre-wrap; max-height: 120px; overflow-y: auto;
+}
+.typing-dots-inline {
+  display: inline-flex; gap: 3px; margin-left: 6px; vertical-align: middle;
+}
+.typing-dots-inline i {
+  width: 4px; height: 4px; border-radius: 50%; background: currentColor;
+  animation: bounce 1.1s ease-in-out infinite; display: block;
+}
+.typing-dots-inline i:nth-child(2) { animation-delay: .15s; }
+.typing-dots-inline i:nth-child(3) { animation-delay: .3s; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
 .cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  background: var(--accent);
-  margin-left: 2px;
-  vertical-align: text-bottom;
-  animation: blink .8s step-end infinite;
+  display: inline-block; width: 2px; height: 1em; background: var(--accent);
+  margin-left: 2px; vertical-align: text-bottom; animation: blink .8s step-end infinite;
 }
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
 .typing {
-  display: none;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 0 4px 16px;
-  max-width: 768px;
-  margin: 0 auto;
-  width: 100%;
+  display: none; align-items: center; gap: 5px;
+  padding: 4px 0 4px 16px; max-width: 768px; margin: 0 auto; width: 100%;
 }
 .typing.show { display: flex; }
 .typing span {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent);
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
   animation: bounce 1.2s ease-in-out infinite;
 }
 .typing span:nth-child(2) { animation-delay: .15s; }
@@ -535,71 +416,42 @@ button { cursor: pointer; border: 0; background: none; }
   40% { opacity: 1; transform: translateY(-4px); }
 }
 
-/* ========== COMPOSER ========== */
 .composer-outer {
-  flex-shrink: 0;
-  padding: 16px 16px 16px;
+  flex-shrink: 0; padding: 16px 16px 16px;
   background: linear-gradient(to top, var(--bg) 70%, transparent);
 }
-.composer-inner {
-  max-width: 768px;
-  margin: 0 auto;
-}
+.composer-inner { max-width: 768px; margin: 0 auto; }
 .composer-box {
   background: var(--composer-bg);
   border-radius: 28px;
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 0 0 0.5px rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.35);
-  overflow: hidden;
+  overflow: visible;
   transition: border-color .15s, box-shadow .15s;
+  position: relative;
+  z-index: 20;
 }
 .composer-box:focus-within {
   border-color: rgba(255,138,0,0.35);
   box-shadow: 0 0 0 2px rgba(255,138,0,0.08), 0 8px 32px rgba(0,0,0,0.35);
 }
-.composer-input {
-  padding: 14px 18px 4px;
-}
+.composer-input { padding: 14px 18px 4px; }
 #chatInput {
-  width: 100%;
-  min-height: 24px;
-  max-height: 200px;
-  resize: none;
-  border: 0;
-  outline: none;
-  background: transparent;
-  color: var(--text);
-  font-size: 15.5px;
-  line-height: 1.45;
-  padding: 0;
+  width: 100%; min-height: 24px; max-height: 200px; resize: none;
+  border: 0; outline: none; background: transparent; color: var(--text);
+  font-size: 15.5px; line-height: 1.45; padding: 0;
 }
 #chatInput::placeholder { color: var(--muted2); }
-
 .composer-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 4px 10px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; padding: 4px 10px 10px;
 }
-.bar-left, .bar-right {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
+.bar-left, .bar-right { display: flex; align-items: center; gap: 2px; }
 .icon-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  color: var(--muted);
-  transition: background .12s, color .12s;
+  width: 34px; height: 34px; border-radius: 999px; display: grid; place-items: center;
+  color: var(--muted); transition: background .12s, color .12s;
 }
-.icon-btn:hover {
-  background: rgba(255,255,255,0.08);
-  color: var(--text);
-}
+.icon-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 .icon-btn svg { width: 18px; height: 18px; }
 
 .model-pill {
@@ -614,62 +466,61 @@ button { cursor: pointer; border: 0; background: none; }
   font-weight: 500;
   white-space: nowrap;
   transition: background .12s;
-  cursor: default;
+  cursor: pointer;
   user-select: none;
+  position: relative;
+  z-index: 30;
 }
 .model-pill:hover { background: rgba(255,255,255,0.06); }
-.model-pill .m-icon {
-  display: inline-flex;
-  color: var(--muted);
-}
+.model-pill .m-icon { display: inline-flex; color: var(--muted); }
 .model-pill .m-icon svg { width: 16px; height: 16px; }
 .model-pill .m-name { font-weight: 600; color: var(--text); }
 .model-pill .m-tier { color: var(--muted2); font-weight: 500; }
-.model-pill .m-chev {
-  color: var(--muted2);
-  display: inline-flex;
-  margin-left: 1px;
-}
+.model-pill .m-chev { color: var(--muted2); display: inline-flex; margin-left: 1px; }
 .model-pill .m-chev svg { width: 14px; height: 14px; }
 
+.model-menu {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  min-width: 220px;
+  background: #2a2a2a;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06);
+  padding: 6px;
+  display: none;
+}
+.model-menu.open {
+  display: block;
+}
+.model-menu button {
+  width: 100%; text-align: left; padding: 10px 12px; border-radius: 8px;
+  color: var(--text); font-size: 13px; font-weight: 500;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.model-menu button:hover { background: rgba(255,255,255,0.06); }
+.model-menu button.active { background: var(--accent-soft); }
+.model-menu button .mm-name { font-weight: 600; }
+.model-menu button .mm-desc { font-size: 11px; color: var(--muted2); font-weight: 400; }
+
 #sendBtn {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  background: #fff;
-  color: #0d0d0d;
-  display: grid;
-  place-items: center;
-  transition: opacity .12s, background .12s;
-  flex-shrink: 0;
+  width: 34px; height: 34px; border-radius: 999px; background: #fff; color: #0d0d0d;
+  display: grid; place-items: center; transition: opacity .12s, background .12s; flex-shrink: 0;
 }
 #sendBtn:hover:not(:disabled) { background: #ececec; }
-#sendBtn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
+#sendBtn:disabled { opacity: 0.35; cursor: not-allowed; }
 #sendBtn svg { width: 16px; height: 16px; }
-
 .composer-hint {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 11.5px;
-  color: var(--muted2);
+  text-align: center; margin-top: 10px; font-size: 11.5px; color: var(--muted2);
 }
 
-/* ========== GATE / MODALS ========== */
 .gate {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  background: var(--bg);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
-  text-align: center;
-  padding: 40px 20px;
+  position: fixed; inset: 0; z-index: 500; background: var(--bg);
+  display: none; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px; text-align: center; padding: 40px 20px;
 }
 .gate.show { display: flex; }
 .gate h2 { font-size: 22px; font-weight: 700; }
@@ -682,12 +533,9 @@ button { cursor: pointer; border: 0; background: none; }
 }
 .modal-overlay.show { display: flex; }
 .modal {
-  width: min(400px, 94vw);
-  background: #2a2a2a;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px;
-  padding: 28px 24px;
-  box-shadow: var(--shadow);
+  width: min(400px, 94vw); background: #2a2a2a;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+  padding: 28px 24px; box-shadow: var(--shadow);
 }
 .modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
 .modal p.sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
@@ -705,12 +553,10 @@ button { cursor: pointer; border: 0; background: none; }
   flex: 1; height: 42px; border-radius: 10px; font-weight: 600; cursor: pointer;
 }
 .modal .primary {
-  background: linear-gradient(135deg, var(--accent), #ff6a00);
-  color: #111;
+  background: linear-gradient(135deg, var(--accent), #ff6a00); color: #111;
 }
 .modal .secondary {
-  background: rgba(255,255,255,0.06);
-  color: var(--text);
+  background: rgba(255,255,255,0.06); color: var(--text);
   border: 1px solid rgba(255,255,255,0.1);
 }
 .modal .switch { text-align: center; margin-top: 16px; font-size: 13px; color: var(--muted); }
@@ -718,11 +564,8 @@ button { cursor: pointer; border: 0; background: none; }
 
 @media (max-width: 768px) {
   .sidebar {
-    position: fixed;
-    left: 0; top: 0; bottom: 0;
-    z-index: 900;
-    transform: translateX(-100%);
-    transition: transform .2s ease;
+    position: fixed; left: 0; top: 0; bottom: 0; z-index: 900;
+    transform: translateX(-100%); transition: transform .2s ease;
     box-shadow: 8px 0 32px rgba(0,0,0,0.4);
   }
   .sidebar.open { transform: translateX(0); }
@@ -791,15 +634,25 @@ button { cursor: pointer; border: 0; background: none; }
             </button>
           </div>
           <div class="bar-right">
-            <div class="model-pill" title="Model">
+            <div class="model-pill" id="modelPill" title="Switch model">
               <span class="m-icon">
                 <svg viewBox="0 0 20 20" fill="none"><path d="M11.6768 1.95898C11.9133 2.05697 12.0674 2.28778 12.0674 2.54395V7.7832H16.2334C16.4766 7.78331 16.6984 7.92277 16.8037 8.1416C16.9089 8.36043 16.8795 8.62042 16.7275 8.81055L8.97754 18.498C8.81774 18.6977 8.55042 18.7763 8.30957 18.6904C8.0689 18.6045 7.9082 18.3766 7.9082 18.1211V12.8828H3.7666C3.52318 12.8828 3.30106 12.7433 3.19531 12.5244C3.08974 12.3055 3.11926 12.0451 3.27148 11.8545L11.0215 2.16699C11.1814 1.96711 11.4401 1.86099 11.6768 1.95898ZM5.08398 11.6162H8.54199C8.8918 11.6164 9.17477 11.9 9.1748 12.25V16.3154L14.916 9.0498H11.4346C11.0847 9.0498 10.8008 8.76617 10.8008 8.41602V4.34863L5.08398 11.6162Z" fill="currentColor"/></svg>
               </span>
-              <span class="m-name">1.2 Flare Old</span>
-              <span class="m-tier">Low Quality</span>
+              <span class="m-name" id="modelName">Flare</span>
+              <span class="m-tier" id="modelTier">Fast</span>
               <span class="m-chev">
-                <svg viewBox="0 0 16 16" fill="none"><path d="M11.1003 6.45825C11.2939 6.33037 11.5576 6.35152 11.728 6.52197C11.8985 6.69243 11.9196 6.95606 11.7918 7.14966L11.728 7.22803L8.35303 10.603C8.15826 10.7978 7.84175 10.7978 7.64697 10.603L4.27197 7.22803L4.20825 7.14966C4.08037 6.95606 4.10152 6.69243 4.27197 6.52197C4.44243 6.35152 4.70606 6.33037 4.89966 6.45825L4.97803 6.52197L8 9.54395L11.022 6.52197L11.1003 6.45825Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 16 16" fill="none"><path d="M4.47 6.47a.75.75 0 011.06 0L8 8.94l2.47-2.47a.75.75 0 111.06 1.06l-3 3a.75.75 0 01-1.06 0l-3-3a.75.75 0 010-1.06z" fill="currentColor"/></svg>
               </span>
+              <div class="model-menu" id="modelMenu">
+                <button type="button" data-model="flare" class="active">
+                  <span class="mm-name">Flare</span>
+                  <span class="mm-desc">Fast single-model responses</span>
+                </button>
+                <button type="button" data-model="flare-multi">
+                  <span class="mm-name">Flare Multi</span>
+                  <span class="mm-desc">Multi-agent pipeline (slower, deeper)</span>
+                </button>
+              </div>
             </div>
             <button type="button" id="sendBtn" aria-label="Send" disabled>
               <svg viewBox="0 0 16 16" fill="none"><path d="M7.20014 12.8V5.13121L4.56576 7.76558C4.25334 8.078 3.74693 8.078 3.43451 7.76558C3.12209 7.45316 3.12209 6.94675 3.43451 6.63433L7.43451 2.63433L7.49545 2.57965C7.80967 2.32337 8.27287 2.34144 8.56576 2.63433L12.5658 6.63433L12.6204 6.69527C12.8767 7.00949 12.8587 7.47269 12.5658 7.76558C12.2729 8.05848 11.8097 8.07655 11.4954 7.82027L11.4345 7.76558L8.80014 5.13121V12.8C8.80014 13.2418 8.44196 13.6 8.00014 13.6C7.55831 13.6 7.20014 13.2418 7.20014 12.8Z" fill="currentColor"/></svg>
@@ -807,780 +660,1083 @@ button { cursor: pointer; border: 0; background: none; }
           </div>
         </div>
       </div>
-      <div class="composer-hint">Flare, 2026</div>
+      <div class="composer-hint">Flare AI · Select model above</div>
     </div>
-  </div>
-</div>
-
-<div id="gate" class="gate">
-  <h2>Login required</h2>
-  <p>Create a free account or log in to chat with Flare AI. Your chats sync across devices when signed in.</p>
-  <div class="auth-btns">
-    <button class="btn-login" type="button" onclick="document.getElementById('openLogin').click()">Log in</button>
-    <button class="btn-signup" type="button" onclick="document.getElementById('openSignup').click()">Sign up</button>
   </div>
 </div>
 
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
-    <h2>Welcome back</h2>
-    <p class="sub">Log in to chat with Flare AI</p>
+    <h2>Log in</h2>
+    <p class="sub">Welcome back to Flare</p>
     <div class="error" id="loginError"></div>
     <label>Username or email</label>
-    <input type="text" id="loginId" placeholder="you@example.com" autocomplete="username">
+    <input type="text" id="loginId" autocomplete="username">
     <label>Password</label>
-    <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+    <input type="password" id="loginPassword" autocomplete="current-password">
     <div class="actions">
-      <button class="secondary" type="button" onclick="closeModals()">Cancel</button>
-      <button class="primary" type="button" id="loginSubmit">Log in</button>
+      <button type="button" class="secondary" id="loginCancel">Cancel</button>
+      <button type="button" class="primary" id="loginSubmit">Log in</button>
     </div>
     <div class="switch">No account? <a id="switchToSignup">Sign up</a></div>
   </div>
 </div>
+
 <div class="modal-overlay" id="signupModal">
   <div class="modal">
-    <h2>Create account</h2>
-    <p class="sub">Join Flare to use the AI assistant</p>
+    <h2>Sign up</h2>
+    <p class="sub">Create your Flare account</p>
     <div class="error" id="signupError"></div>
     <label>Username</label>
-    <input type="text" id="signupUsername" placeholder="cooluser" autocomplete="username">
+    <input type="text" id="signupUsername" autocomplete="username">
     <label>Email</label>
-    <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
-    <label>Password (min 8 chars)</label>
-    <input type="password" id="signupPassword" placeholder="••••••••" autocomplete="new-password">
+    <input type="email" id="signupEmail" autocomplete="email">
+    <label>Password</label>
+    <input type="password" id="signupPassword" autocomplete="new-password">
     <div class="actions">
-      <button class="secondary" type="button" onclick="closeModals()">Cancel</button>
-      <button class="primary" type="button" id="signupSubmit">Create account</button>
+      <button type="button" class="secondary" id="signupCancel">Cancel</button>
+      <button type="button" class="primary" id="signupSubmit">Create account</button>
     </div>
     <div class="switch">Already have an account? <a id="switchToLogin">Log in</a></div>
   </div>
 </div>
+
 <div class="modal-overlay" id="verifyModal">
   <div class="modal">
-    <h2>Enter verification code</h2>
-    <p class="sub">We sent a 6-digit verification code to <strong id="verifyEmailDisplay"></strong>.</p>
+    <h2>Verify email</h2>
+    <p class="sub">Enter the 6-digit code we sent to <span id="verifyEmailDisplay"></span></p>
     <div class="error" id="verifyError"></div>
-    <label for="verifyCodeInput">Verification code</label>
-    <input type="text" id="verifyCodeInput" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" style="text-align:center;font-size:24px;font-weight:700;letter-spacing:8px;">
+    <label>Code</label>
+    <input type="text" id="verifyCodeInput" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
     <div class="actions">
-      <button class="secondary" type="button" id="resendCodeBtn">Resend code</button>
-      <button class="primary" type="button" id="verifySubmit">Verify account</button>
+      <button type="button" class="secondary" id="resendCodeBtn">Resend</button>
+      <button type="button" class="primary" id="verifySubmit">Verify</button>
     </div>
-    <div class="switch"><a id="closeVerify">Cancel</a></div>
   </div>
 </div>
 
 <script>
-const FLARE_API="https://d73b-2a00-23c8-3639-601-dd36-aa07-de7d-6164.ngrok-free.app";
-const TOKEN_KEY="flare_token";
-const USER_KEY="flare_user";
-let currentUser=null;
-let pendingVerifyEmail=null;
-let chatHistory=[];
-let isSending=false;
-let chats=[];
-let currentChatId=null;
-let openMenuId=null;
+const FLARE_API = window.FLARE_API || "https://d73b-2a00-23c8-3639-601-dd36-aa07-de7d-6164.ngrok-free.app";
 
-async function fetchJson(url,options={}){
-  const response=await fetch(url,options);
-  const raw=await response.text();
-  const contentType=response.headers.get("content-type")||"";
-  if(!contentType.toLowerCase().includes("application/json")){
-    const preview=raw.replace(/\s+/g," ").slice(0,300);
-    throw new Error(`Expected JSON from ${url}, but received HTTP ${response.status} ${contentType||"(no content type)"}. Response: ${preview}`);
-  }
-  let data;
-  try{data=JSON.parse(raw);}catch{throw new Error(`Invalid JSON from ${url}. Response: ${raw.slice(0,300)}`);}
-  if(!response.ok)throw new Error(data?.error||`HTTP ${response.status}`);
-  return data;
-}
-function authHeaders(extra={}){
-  return Object.assign({
-    "Accept":"application/json",
-    "Authorization":`Bearer ${getToken()}`,
-    "ngrok-skip-browser-warning":"true"
-  },extra);
-}
-function getToken(){return localStorage.getItem(TOKEN_KEY);}
-function setAuth(token,user){
-  localStorage.setItem(TOKEN_KEY,token);
-  localStorage.setItem(USER_KEY,JSON.stringify(user));
-  currentUser=user;
-  updateUI();
+let currentUser = null;
+let currentChatId = null;
+let chatHistory = [];
+let chats = [];
+let isSending = false;
+let userScrolledUp = false;
+let openMenuId = null;
+let pendingVerifyEmail = "";
+let currentModel = localStorage.getItem("flare_model") || "flare";
+
+function getToken() { return localStorage.getItem("flare_token") || ""; }
+function setAuth(token, user) {
+  localStorage.setItem("flare_token", token);
+  currentUser = user;
+  document.getElementById("authBtns").style.display = "none";
+  document.getElementById("userChip").classList.add("show");
+  document.getElementById("userNameDisplay").textContent = user.username || "User";
+  document.getElementById("userAvatar").textContent = (user.username || "F").charAt(0).toUpperCase();
   loadChats();
 }
-function clearAuth(){
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
-  currentUser=null;
-  chats=[];
-  currentChatId=null;
-  chatHistory=[];
-  updateUI();
+function clearAuth() {
+  localStorage.removeItem("flare_token");
+  currentUser = null;
+  currentChatId = null;
+  chatHistory = [];
+  chats = [];
+  document.getElementById("authBtns").style.display = "flex";
+  document.getElementById("userChip").classList.remove("show");
+  renderEmptyMessages();
+  document.getElementById("chatList").innerHTML = '<div class="side-empty">Log in to see chats.</div>';
 }
-function updateUI(){
-  const userChip=document.getElementById("userChip");
-  const userNameDisplay=document.getElementById("userNameDisplay");
-  const userAvatar=document.getElementById("userAvatar");
-  const authBtns=document.getElementById("authBtns");
-  const gate=document.getElementById("gate");
-  if(currentUser){
-    userChip.classList.add("show");
-    userNameDisplay.textContent=currentUser.username;
-    userAvatar.textContent=(currentUser.username||"F").charAt(0).toUpperCase();
-    authBtns.style.display="none";
-    gate.classList.remove("show");
-  }else{
-    userChip.classList.remove("show");
-    authBtns.style.display="";
-    gate.classList.add("show");
+function authHeaders(extra = {}) {
+  return Object.assign({
+    "Authorization": `Bearer ${getToken()}`,
+    "Accept": "application/json",
+    "ngrok-skip-browser-warning": "true"
+  }, extra);
+}
+async function fetchJson(url, opts = {}) {
+  const r = await fetch(url, opts);
+  const ct = r.headers.get("content-type") || "";
+  if (!ct.includes("application/json")) {
+    const t = await r.text();
+    throw new Error(t.slice(0, 200) || `HTTP ${r.status}`);
   }
+  const data = await r.json();
+  if (!r.ok && !data.success) throw new Error(data.error || `HTTP ${r.status}`);
+  return data;
 }
-async function checkSession(){
-  const token=getToken();
-  const saved=localStorage.getItem(USER_KEY);
-  if(!token||!saved){clearAuth();return;}
-  try{
-    const data=await fetchJson(`${FLARE_API}/api/auth/me`,{
-      method:"GET",
-      headers:authHeaders(),
-      credentials:"omit"
-    });
-    if(data.success){currentUser=data.user;updateUI();await loadChats();}
+async function checkSession() {
+  const token = getToken();
+  if (!token) { clearAuth(); return; }
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/me`, { method: "GET", headers: authHeaders() });
+    if (data.success && data.user) setAuth(token, data.user);
     else clearAuth();
-  }catch{clearAuth();}
+  } catch { clearAuth(); }
 }
-function closeModals(){
-  document.getElementById("loginModal").classList.remove("show");
-  document.getElementById("signupModal").classList.remove("show");
-  document.getElementById("verifyModal").classList.remove("show");
-  document.getElementById("loginError").classList.remove("show");
-  document.getElementById("signupError").classList.remove("show");
-  document.getElementById("verifyError").classList.remove("show");
+
+function updateModelUI() {
+  const name = document.getElementById("modelName");
+  const tier = document.getElementById("modelTier");
+  const menu = document.getElementById("modelMenu");
+  if (currentModel === "flare-multi") {
+    name.textContent = "Flare Multi";
+    tier.textContent = "Agents";
+  } else {
+    name.textContent = "Flare";
+    tier.textContent = "Fast";
+  }
+  menu.querySelectorAll("button").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.model === currentModel);
+  });
 }
-function openLoginModal(){closeModals();document.getElementById("loginModal").classList.add("show");}
-function openSignupModal(){closeModals();document.getElementById("signupModal").classList.add("show");}
-function openVerify(email){
-  pendingVerifyEmail=email||"";
-  closeModals();
-  document.getElementById("verifyEmailDisplay").textContent=pendingVerifyEmail;
-  document.getElementById("verifyCodeInput").value="";
-  document.getElementById("verifyError").textContent="";
-  document.getElementById("verifyError").style.color="#fca5a5";
-  document.getElementById("verifyError").classList.remove("show");
-  document.getElementById("verifyModal").classList.add("show");
-  setTimeout(()=>{document.getElementById("verifyCodeInput").focus();},100);
-}
-document.getElementById("openLogin").addEventListener("click",openLoginModal);
-document.getElementById("openSignup").addEventListener("click",openSignupModal);
-document.getElementById("switchToSignup").addEventListener("click",openSignupModal);
-document.getElementById("switchToLogin").addEventListener("click",openLoginModal);
-document.getElementById("closeVerify").addEventListener("click",()=>document.getElementById("verifyModal").classList.remove("show"));
-document.getElementById("loginModal").addEventListener("click",e=>{if(e.target.id==="loginModal")closeModals();});
-document.getElementById("signupModal").addEventListener("click",e=>{if(e.target.id==="signupModal")closeModals();});
-document.getElementById("verifyModal").addEventListener("click",e=>{if(e.target.id==="verifyModal")document.getElementById("verifyModal").classList.remove("show");});
-document.getElementById("loginSubmit").addEventListener("click",async()=>{
-  const err=document.getElementById("loginError");
-  err.classList.remove("show");
-  const login=document.getElementById("loginId").value.trim();
-  const password=document.getElementById("loginPassword").value;
-  try{
-    const data=await fetchJson(`${FLARE_API}/api/auth/login`,{
-      method:"POST",
-      headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
-      body:JSON.stringify({login,password})
-    });
-    const verificationMessage=String(data?.error||data?.message||"").toLowerCase();
-    const needsVerification=Boolean(
-      data?.needs_verification||data?.requires_verification||data?.email_verification_required||
-      verificationMessage.includes("verify your email")||verificationMessage.includes("verification required")||
-      verificationMessage.includes("email not verified")||verificationMessage.includes("email is not verified")
-    );
-    if(needsVerification){
-      const verifyEmail=data?.email||data?.user?.email||login;
-      openVerify(verifyEmail);
-      try{
-        await fetchJson(`${FLARE_API}/api/auth/resend-code`,{
-          method:"POST",
-          headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
-          body:JSON.stringify({email:verifyEmail})
-        });
-      }catch(resendError){}
-      return;
-    }
-    if(!data.success)throw new Error(data.error||"Login failed");
-    setAuth(data.token,data.user);
-    closeModals();
-  }catch(e){
-    err.textContent=e.message;
-    err.classList.add("show");
-  }
+updateModelUI();
+
+document.getElementById("modelPill").addEventListener("click", (e) => {
+  e.stopPropagation();
+  document.getElementById("modelMenu").classList.toggle("open");
 });
-document.getElementById("signupSubmit").addEventListener("click",async()=>{
-  const err=document.getElementById("signupError");
-  err.classList.remove("show");
-  const username=document.getElementById("signupUsername").value.trim();
-  const email=document.getElementById("signupEmail").value.trim();
-  const password=document.getElementById("signupPassword").value;
-  try{
-    const data=await fetchJson(`${FLARE_API}/api/auth/register`,{
-      method:"POST",
-      headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
-      body:JSON.stringify({username,email,password})
-    });
-    if(data.needs_verification){openVerify(data.email||email);return;}
-    if(!data.success)throw new Error(data.error||"Signup failed");
-    setAuth(data.token,data.user);
-    closeModals();
-  }catch(e){
-    err.textContent=e.message;
-    err.classList.add("show");
-  }
+document.getElementById("modelMenu").addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-model]");
+  if (!btn) return;
+  e.stopPropagation();
+  currentModel = btn.dataset.model;
+  localStorage.setItem("flare_model", currentModel);
+  updateModelUI();
+  document.getElementById("modelMenu").classList.remove("open");
 });
-const verifyCodeInput=document.getElementById("verifyCodeInput");
-verifyCodeInput.addEventListener("input",()=>{verifyCodeInput.value=verifyCodeInput.value.replace(/\D/g,"").slice(0,6);});
-verifyCodeInput.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();document.getElementById("verifySubmit").click();}});
-document.getElementById("verifySubmit").addEventListener("click",async()=>{
-  const err=document.getElementById("verifyError");
-  err.classList.remove("show");
-  const code=verifyCodeInput.value.trim();
-  if(!/^\d{6}$/.test(code)){
-    err.textContent="Enter the 6-digit code from your email.";
-    err.style.color="#fca5a5";
-    err.classList.add("show");
-    verifyCodeInput.focus();
-    return;
-  }
-  try{
-    const data=await fetchJson(`${FLARE_API}/api/auth/verify-code`,{
-      method:"POST",
-      headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
-      body:JSON.stringify({email:pendingVerifyEmail,code})
-    });
-    if(!data.success)throw new Error(data.error||"Verification failed");
-    setAuth(data.token,data.user);
-    document.getElementById("verifyModal").classList.remove("show");
-  }catch(e){
-    err.textContent=e.message;
-    err.classList.add("show");
-  }
-});
-document.getElementById("resendCodeBtn").addEventListener("click",async()=>{
-  const err=document.getElementById("verifyError");
-  err.classList.remove("show");
-  try{
-    const data=await fetchJson(`${FLARE_API}/api/auth/resend-code`,{
-      method:"POST",
-      headers:{"Content-Type":"application/json","Accept":"application/json","ngrok-skip-browser-warning":"true"},
-      body:JSON.stringify({email:pendingVerifyEmail})
-    });
-    if(!data.success)throw new Error(data.error||"Could not resend");
-    err.textContent="New code sent — check your inbox.";
-    err.style.color="#22c55e";
-    err.classList.add("show");
-    verifyCodeInput.value="";
-    verifyCodeInput.focus();
-  }catch(e){
-    err.style.color="#fca5a5";
-    err.textContent=e.message;
-    err.classList.add("show");
-  }
-});
-document.getElementById("logoutBtn").addEventListener("click",async()=>{
-  const token=getToken();
-  if(token){
-    try{
-      await fetch(`${FLARE_API}/api/auth/logout`,{
-        method:"POST",
-        headers:{"Authorization":`Bearer ${token}`,"ngrok-skip-browser-warning":"true"}
-      });
-    }catch{}
-  }
-  clearAuth();
+document.addEventListener("click", () => {
+  document.getElementById("modelMenu").classList.remove("open");
 });
 
-function escapeHTML(s){
-  return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function escapeHTML(s) {
+  return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
-function splitThinking(raw){
-  let text=String(raw??"");
-  let thinking="";
-  const patterns=[
+function splitThinking(raw) {
+  let text = String(raw ?? "");
+  let thinking = "";
+  const patterns = [
     /Thinking\.\.\.\s*([\s\S]*?)\s*\.\.\.done thinking\.\s*/i,
     /<think>\s*([\s\S]*?)\s*<\/think>\s*/i,
     /\[thinking\]\s*([\s\S]*?)\s*\[\/thinking\]\s*/i
   ];
-  for(const re of patterns){
-    const m=text.match(re);
-    if(m){
-      thinking=(m[1]||"").trim();
-      text=text.replace(re,"").trim();
+  for (const re of patterns) {
+    const m = text.match(re);
+    if (m) {
+      thinking = (m[1] || "").trim();
+      text = text.replace(re, "").trim();
       break;
     }
   }
-  if(!thinking){
-    const m2=text.match(/^Thinking\.\.\.\s*([\s\S]*?)(?:\n{2,}|\r\n{2,})([\s\S]*)$/i);
-    if(m2){
-      thinking=(m2[1]||"").replace(/\.\.\.done thinking\./i,"").trim();
-      text=(m2[2]||"").trim();
+  if (!thinking) {
+    const m2 = text.match(/^Thinking\.\.\.\s*([\s\S]*?)(?:\n{2,}|\r\n{2,})([\s\S]*)$/i);
+    if (m2) {
+      thinking = (m2[1] || "").replace(/\.\.\.done thinking\./i, "").trim();
+      text = (m2[2] || "").trim();
     }
   }
-  text=text.replace(/^\s+/,"").replace(/\s+$/,"");
-  return {thinking,answer:text};
+  return { thinking, answer: text.trim() };
 }
-function renderMarkdown(src){
-  let text=String(src??"");
-  const blocks=[];
-  text=text.replace(/```(\w*)\n?([\s\S]*?)```/g,(_,lang,code)=>{
-    const id=blocks.length;
-    blocks.push(`<pre><button class="copy-btn" type="button">Copy</button><code class="language-${escapeHTML(lang||"")}">${escapeHTML(code.replace(/\n$/,""))}</code></pre>`);
+function renderMarkdown(src) {
+  let text = String(src ?? "");
+  const blocks = [];
+  text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+    const id = blocks.length;
+    blocks.push(`<pre><button class="copy-btn" type="button">Copy</button><code class="language-${escapeHTML(lang || "")}">${escapeHTML(code.replace(/\n$/, ""))}</code></pre>`);
     return `\0BLOCK${id}\0`;
   });
-  text=text.replace(/`([^`\n]+)`/g,(_,c)=>`<code>${escapeHTML(c)}</code>`);
-  text=text.replace(/^######\s+(.+)$/gm,"<h3>$1</h3>");
-  text=text.replace(/^#####\s+(.+)$/gm,"<h3>$1</h3>");
-  text=text.replace(/^####\s+(.+)$/gm,"<h3>$1</h3>");
-  text=text.replace(/^###\s+(.+)$/gm,"<h3>$1</h3>");
-  text=text.replace(/^##\s+(.+)$/gm,"<h2>$1</h2>");
-  text=text.replace(/^#\s+(.+)$/gm,"<h1>$1</h1>");
-  text=text.replace(/\*\*\*(.+?)\*\*\*/g,"<strong><em>$1</em></strong>");
-  text=text.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");
-  text=text.replace(/__(.+?)__/g,"<strong>$1</strong>");
-  text=text.replace(/\*(.+?)\*/g,"<em>$1</em>");
-  text=text.replace(/_(.+?)_/g,"<em>$1</em>");
-  text=text.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-  text=text.replace(/^>\s+(.+)$/gm,"<blockquote>$1</blockquote>");
-  text=text.replace(/^---+$/gm,"<hr>");
-  text=text.replace(/^\s*[-*]\s+(.+)$/gm,"<li>$1</li>");
-  text=text.replace(/(?:<li>.*<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
-  text=text.replace(/^\s*\d+\.\s+(.+)$/gm,"<li>$1</li>");
-  text=text.replace(/\n{2,}/g,"</p><p>");
-  text=text.replace(/\n/g,"<br>");
-  text=`<p>${text}</p>`;
-  text=text.replace(/<p>\s*<\/p>/g,"");
-  text=text.replace(/<p>\s*(<h[123]>)/g,"$1");
-  text=text.replace(/(<\/h[123]>)\s*<\/p>/g,"$1");
-  text=text.replace(/<p>\s*(<ul>)/g,"$1");
-  text=text.replace(/(<\/ul>)\s*<\/p>/g,"$1");
-  text=text.replace(/<p>\s*(<pre>)/g,"$1");
-  text=text.replace(/(<\/pre>)\s*<\/p>/g,"$1");
-  text=text.replace(/<p>\s*(<blockquote>)/g,"$1");
-  text=text.replace(/(<\/blockquote>)\s*<\/p>/g,"$1");
-  text=text.replace(/<p>\s*(<hr>)\s*<\/p>/g,"$1");
-  text=text.replace(/\0BLOCK(\d+)\0/g,(_,i)=>blocks[Number(i)]);
+  text = text.replace(/`([^`\n]+)`/g, (_, c) => `<code>${escapeHTML(c)}</code>`);
+  text = text.replace(/^######\s+(.+)$/gm, "<h3>$1</h3>");
+  text = text.replace(/^#####\s+(.+)$/gm, "<h3>$1</h3>");
+  text = text.replace(/^####\s+(.+)$/gm, "<h3>$1</h3>");
+  text = text.replace(/^###\s+(.+)$/gm, "<h3>$1</h3>");
+  text = text.replace(/^##\s+(.+)$/gm, "<h2>$1</h2>");
+  text = text.replace(/^#\s+(.+)$/gm, "<h1>$1</h1>");
+  text = text.replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>");
+  text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  text = text.replace(/__(.+?)__/g, "<strong>$1</strong>");
+  text = text.replace(/\*(.+?)\*/g, "<em>$1</em>");
+  text = text.replace(/_(.+?)_/g, "<em>$1</em>");
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  text = text.replace(/^>\s+(.+)$/gm, "<blockquote>$1</blockquote>");
+  text = text.replace(/^---+$/gm, "<hr>");
+  text = text.replace(/^\s*[-*]\s+(.+)$/gm, "<li>$1</li>");
+  text = text.replace(/(?:<li>.*<\/li>\n?)+/g, m => `<ul>${m}</ul>`);
+  text = text.replace(/^\s*\d+\.\s+(.+)$/gm, "<li>$1</li>");
+  text = text.replace(/\n{2,}/g, "</p><p>");
+  text = text.replace(/\n/g, "<br>");
+  text = `<p>${text}</p>`;
+  text = text.replace(/<p>\s*<\/p>/g, "");
+  text = text.replace(/<p>\s*(<h[123]>)/g, "$1");
+  text = text.replace(/(<\/h[123]>)\s*<\/p>/g, "$1");
+  text = text.replace(/<p>\s*(<ul>)/g, "$1");
+  text = text.replace(/(<\/ul>)\s*<\/p>/g, "$1");
+  text = text.replace(/<p>\s*(<pre>)/g, "$1");
+  text = text.replace(/(<\/pre>)\s*<\/p>/g, "$1");
+  text = text.replace(/<p>\s*(<blockquote>)/g, "$1");
+  text = text.replace(/(<\/blockquote>)\s*<\/p>/g, "$1");
+  text = text.replace(/<p>\s*(<hr>)\s*<\/p>/g, "$1");
+  text = text.replace(/\0BLOCK(\d+)\0/g, (_, i) => blocks[Number(i)]);
   return text;
 }
-function bindCopyButtons(root){
-  root.querySelectorAll(".copy-btn").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const pre=btn.closest("pre");
-      const code=pre?pre.querySelector("code"):null;
-      if(!code)return;
-      navigator.clipboard.writeText(code.textContent||"").then(()=>{
-        btn.textContent="Copied";
-        setTimeout(()=>{btn.textContent="Copy";},1500);
-      }).catch(()=>{});
+function bindCopyButtons(root) {
+  root.querySelectorAll(".copy-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const pre = btn.closest("pre");
+      const code = pre ? pre.querySelector("code") : null;
+      if (!code) return;
+      navigator.clipboard.writeText(code.textContent || "").then(() => {
+        btn.textContent = "Copied";
+        setTimeout(() => { btn.textContent = "Copy"; }, 1500);
+      }).catch(() => {});
     });
   });
 }
-function titleFromMessages(messages){
-  const first=messages.find(m=>m.role==="user");
-  if(!first)return "New chat";
-  const t=String(first.content||"").replace(/\s+/g," ").trim();
-  return t.slice(0,48)+(t.length>48?"…":"")||"New chat";
+
+function titleFromMessages(messages) {
+  const first = messages.find(m => m.role === "user");
+  if (!first) return "New chat";
+  const t = String(first.content || "").replace(/\s+/g, " ").trim();
+  return t.slice(0, 48) + (t.length > 48 ? "…" : "") || "New chat";
 }
-function renderChatList(){
-  const list=document.getElementById("chatList");
-  list.innerHTML="";
-  if(!chats.length){
-    list.innerHTML='<div class="side-empty">No chats yet.<br>Start a conversation.</div>';
+function renderChatList() {
+  const list = document.getElementById("chatList");
+  list.innerHTML = "";
+  if (!chats.length) {
+    list.innerHTML = '<div class="side-empty">No chats yet.<br>Start a conversation.</div>';
     return;
   }
-  chats.forEach(chat=>{
-    const item=document.createElement("div");
-    item.className="chat-item"+(chat.id===currentChatId?" active":"");
-    item.dataset.id=String(chat.id);
-    item.innerHTML=`<span class="chat-item-title">${escapeHTML(chat.title||"New chat")}</span><button type="button" class="chat-item-menu-btn" aria-label="Menu">⋯</button><div class="chat-menu"><button type="button" class="delete-chat-btn">Delete chat</button></div>`;
-    const menuBtn=item.querySelector(".chat-item-menu-btn");
-    const menu=item.querySelector(".chat-menu");
-    const delBtn=item.querySelector(".delete-chat-btn");
-    item.addEventListener("click",e=>{
-      if(e.target.closest(".chat-item-menu-btn")||e.target.closest(".chat-menu"))return;
+  chats.forEach(chat => {
+    const item = document.createElement("div");
+    item.className = "chat-item" + (chat.id === currentChatId ? " active" : "");
+    item.dataset.id = String(chat.id);
+    item.innerHTML = `<span class="chat-item-title">${escapeHTML(chat.title || "New chat")}</span><button type="button" class="chat-item-menu-btn" aria-label="Menu">⋯</button><div class="chat-menu"><button type="button" class="delete-chat-btn">Delete chat</button></div>`;
+    const menuBtn = item.querySelector(".chat-item-menu-btn");
+    const menu = item.querySelector(".chat-menu");
+    const delBtn = item.querySelector(".delete-chat-btn");
+    item.addEventListener("click", e => {
+      if (e.target.closest(".chat-item-menu-btn") || e.target.closest(".chat-menu")) return;
       openChat(chat.id);
       document.getElementById("chatSide").classList.remove("open");
     });
-    menuBtn.addEventListener("click",e=>{
+    menuBtn.addEventListener("click", e => {
       e.stopPropagation();
-      const willOpen=!menu.classList.contains("open");
-      document.querySelectorAll(".chat-menu.open").forEach(m=>m.classList.remove("open"));
-      document.querySelectorAll(".chat-item-menu-btn.open").forEach(b=>b.classList.remove("open"));
-      if(willOpen){
+      const willOpen = !menu.classList.contains("open");
+      document.querySelectorAll(".chat-menu.open").forEach(m => m.classList.remove("open"));
+      document.querySelectorAll(".chat-item-menu-btn.open").forEach(b => b.classList.remove("open"));
+      if (willOpen) {
         menu.classList.add("open");
         menuBtn.classList.add("open");
-        openMenuId=chat.id;
-      }else openMenuId=null;
+        openMenuId = chat.id;
+      } else openMenuId = null;
     });
-    delBtn.addEventListener("click",e=>{
+    delBtn.addEventListener("click", e => {
       e.stopPropagation();
       deleteChat(chat.id);
     });
     list.appendChild(item);
   });
 }
-document.addEventListener("click",()=>{
-  document.querySelectorAll(".chat-menu.open").forEach(m=>m.classList.remove("open"));
-  document.querySelectorAll(".chat-item-menu-btn.open").forEach(b=>b.classList.remove("open"));
-  openMenuId=null;
+document.addEventListener("click", () => {
+  document.querySelectorAll(".chat-menu.open").forEach(m => m.classList.remove("open"));
+  document.querySelectorAll(".chat-item-menu-btn.open").forEach(b => b.classList.remove("open"));
+  openMenuId = null;
 });
-async function loadChats(){
-  if(!getToken())return;
-  try{
-    const data=await fetchJson(`${FLARE_API}/api/chats`,{method:"GET",headers:authHeaders()});
-    chats=data.chats||[];
+
+async function loadChats() {
+  if (!getToken()) return;
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/chats`, { method: "GET", headers: authHeaders() });
+    chats = data.chats || [];
     renderChatList();
-    if(currentChatId){
-      const exists=chats.some(c=>c.id===currentChatId);
-      if(exists)await openChat(currentChatId);
+    if (currentChatId) {
+      const exists = chats.some(c => c.id === currentChatId);
+      if (exists) await openChat(currentChatId);
       else await startNewChat(true);
-    }else if(chats.length){
+    } else if (chats.length) {
       await openChat(chats[0].id);
-    }else{
+    } else {
       await startNewChat(true);
     }
-  }catch(e){
+  } catch (e) {
     console.error(e);
     renderEmptyMessages();
   }
 }
-let userScrolledUp=false;
-function scrollMessagesToBottom(force=false){
-  const wrap=document.getElementById("messagesWrap");
-  if(force || !userScrolledUp) wrap.scrollTop=wrap.scrollHeight;
+
+function scrollMessagesToBottom(force = false) {
+  const wrap = document.getElementById("messagesWrap");
+  if (force || !userScrolledUp) wrap.scrollTop = wrap.scrollHeight;
 }
 
-function renderEmptyMessages(){
-  const messages=document.getElementById("messages");
-  messages.innerHTML=`
+function renderEmptyMessages() {
+  const messages = document.getElementById("messages");
+  messages.innerHTML = `
     <div class="empty-state">
       <div class="empty-icon"><img src="https://iili.io/fuZmZP9.gif" alt="Flare"></div>
       <h1>What can I help with?</h1>
-      <p>Ask about deals, ideas, or anything else. Powered by Flare.</p>
+      <p>Ask about deals, ideas, or anything else. A quick sample of our models. (Free access one of the more advanced models.)</p>
     </div>`;
-  chatHistory=[];
+  chatHistory = [];
 }
-function renderHistoryMessages(){
-  const messages=document.getElementById("messages");
-  messages.innerHTML="";
-  if(!chatHistory.length){
+function renderHistoryMessages() {
+  const messages = document.getElementById("messages");
+  messages.innerHTML = "";
+  if (!chatHistory.length) {
     renderEmptyMessages();
     return;
   }
-  chatHistory.forEach(m=>{
-    if(m.role==="user")appendUserMessage(m.content,false);
+  chatHistory.forEach(m => {
+    if (m.role === "user") appendUserMessage(m.content, false);
     else appendAssistantStatic(m.content);
   });
   scrollMessagesToBottom(true);
 }
-function appendUserMessage(content,scroll=true){
-  const messages=document.getElementById("messages");
-  const empty=messages.querySelector(".empty-state");
-  if(empty) empty.remove();
-  const div=document.createElement("div");
-  div.className="msg user";
-  const initial=(currentUser?.username||"Y").charAt(0).toUpperCase();
-  div.innerHTML=`<div class="msg-avatar">${initial}</div><div class="msg-content"><div class="msg-role">You</div><div class="msg-body"><p>${escapeHTML(content).replace(/\n/g,"<br>")}</p></div></div>`;
+function appendUserMessage(content, scroll = true) {
+  const messages = document.getElementById("messages");
+  const empty = messages.querySelector(".empty-state");
+  if (empty) empty.remove();
+  const div = document.createElement("div");
+  div.className = "msg user";
+  const initial = (currentUser?.username || "Y").charAt(0).toUpperCase();
+  div.innerHTML = `<div class="msg-avatar">${initial}</div><div class="msg-content"><div class="msg-role">You</div><div class="msg-body"><p>${escapeHTML(content).replace(/\n/g, "<br>")}</p></div></div>`;
   messages.appendChild(div);
-  if(scroll)scrollMessagesToBottom(true);
+  if (scroll) scrollMessagesToBottom(true);
 }
-function appendAssistantStatic(content){
-  const messages=document.getElementById("messages");
-  const empty=messages.querySelector(".empty-state");
-  if(empty) empty.remove();
-  const div=document.createElement("div");
-  div.className="msg assistant";
-  const {thinking,answer}=splitThinking(content);
-  let thinkHtml="";
-  if(thinking){
-    thinkHtml=`<div class="think-wrap"><button type="button" class="think-btn">View thinking</button><div class="think-panel">${escapeHTML(thinking)}</div></div>`;
+function appendAssistantStatic(content) {
+  const messages = document.getElementById("messages");
+  const empty = messages.querySelector(".empty-state");
+  if (empty) empty.remove();
+  const div = document.createElement("div");
+  div.className = "msg assistant";
+  const { thinking, answer } = splitThinking(content);
+  let thinkHtml = "";
+  if (thinking) {
+    thinkHtml = `<div class="think-wrap"><button type="button" class="think-btn">View thinking</button><div class="think-panel">${escapeHTML(thinking)}</div></div>`;
   }
-  div.innerHTML=`<div class="msg-avatar"><img src="https://iili.io/fuZmZP9.gif" alt=""></div><div class="msg-content"><div class="msg-role">Flare</div>${thinkHtml}<div class="msg-body">${renderMarkdown(answer||content)}</div></div>`;
-  const thinkBtn=div.querySelector(".think-btn");
-  const thinkPanel=div.querySelector(".think-panel");
-  if(thinkBtn&&thinkPanel){
-    thinkBtn.addEventListener("click",()=>{
-      const open=thinkPanel.classList.toggle("open");
-      thinkBtn.classList.toggle("open",open);
-      thinkBtn.textContent=open?"Hide thinking":"View thinking";
+  div.innerHTML = `<div class="msg-avatar"><img src="https://iili.io/fuZmZP9.gif" alt=""></div><div class="msg-content"><div class="msg-role">Flare</div>${thinkHtml}<div class="msg-body">${renderMarkdown(answer || content)}</div></div>`;
+  const thinkBtn = div.querySelector(".think-btn");
+  const thinkPanel = div.querySelector(".think-panel");
+  if (thinkBtn && thinkPanel) {
+    thinkBtn.addEventListener("click", () => {
+      const open = thinkPanel.classList.toggle("open");
+      thinkBtn.classList.toggle("open", open);
+      thinkBtn.textContent = open ? "Hide thinking" : "View thinking";
     });
   }
   bindCopyButtons(div);
   messages.appendChild(div);
 }
-function createAssistantShell(){
-  const messages=document.getElementById("messages");
-  const empty=messages.querySelector(".empty-state");
-  if(empty) empty.remove();
-  const div=document.createElement("div");
-  div.className="msg assistant";
-  div.innerHTML=`<div class="msg-avatar"><img src="https://iili.io/fuZmZP9.gif" alt=""></div><div class="msg-content"><div class="msg-role">Flare</div><div class="think-wrap" style="display:none"><button type="button" class="think-btn">View thinking</button><div class="think-panel"></div></div><div class="msg-body"></div></div>`;
+
+function createAssistantShell() {
+  const messages = document.getElementById("messages");
+  const empty = messages.querySelector(".empty-state");
+  if (empty) empty.remove();
+  const div = document.createElement("div");
+  div.className = "msg assistant";
+  div.innerHTML = `<div class="msg-avatar"><img src="https://iili.io/fuZmZP9.gif" alt=""></div><div class="msg-content"><div class="msg-role">Flare</div><div class="think-wrap" style="display:none"><button type="button" class="think-btn">View thinking</button><div class="think-panel"></div></div><div class="msg-body"></div></div>`;
   messages.appendChild(div);
-  const thinkBtn=div.querySelector(".think-btn");
-  const thinkPanel=div.querySelector(".think-panel");
-  thinkBtn.addEventListener("click",()=>{
-    const open=thinkPanel.classList.toggle("open");
-    thinkBtn.classList.toggle("open",open);
-    thinkBtn.textContent=open?"Hide thinking":"View thinking";
+  const thinkBtn = div.querySelector(".think-btn");
+  const thinkPanel = div.querySelector(".think-panel");
+  thinkBtn.addEventListener("click", () => {
+    const open = thinkPanel.classList.toggle("open");
+    thinkBtn.classList.toggle("open", open);
+    thinkBtn.textContent = open ? "Hide thinking" : "View thinking";
   });
   scrollMessagesToBottom(true);
   return {
-    el:div,
-    body:div.querySelector(".msg-body"),
-    thinkWrap:div.querySelector(".think-wrap"),
+    el: div,
+    body: div.querySelector(".msg-body"),
+    thinkWrap: div.querySelector(".think-wrap"),
     thinkPanel,
     thinkBtn
   };
 }
-function setThinking(shell,thinking){
-  if(!thinking)return;
-  shell.thinkWrap.style.display="block";
-  shell.thinkPanel.textContent=thinking;
+function setThinking(shell, thinking) {
+  if (!thinking) return;
+  shell.thinkWrap.style.display = "block";
+  shell.thinkPanel.textContent = thinking;
 }
-function typeAnswer(shell,answer,onDone){
-  const full=String(answer||"");
-  let i=0;
-  const step=()=>{
-    i=Math.min(i+2,full.length);
-    const slice=full.slice(0,i);
-    shell.body.innerHTML=renderMarkdown(slice)+(i<full.length?'<span class="cursor"></span>':"");
+function typeAnswer(shell, answer, onDone) {
+  const full = String(answer || "");
+  let i = 0;
+  const chunk = 14;
+  const delay = 3;
+  const step = () => {
+    i = Math.min(i + chunk, full.length);
+    const slice = full.slice(0, i);
+    shell.body.innerHTML = renderMarkdown(slice) + (i < full.length ? '<span class="cursor"></span>' : "");
     bindCopyButtons(shell.body);
     scrollMessagesToBottom();
-    if(i<full.length){
-      requestAnimationFrame(()=>setTimeout(step,12));
-    }else{
-      shell.body.innerHTML=renderMarkdown(full);
+    if (i < full.length) {
+      requestAnimationFrame(() => setTimeout(step, delay));
+    } else {
+      shell.body.innerHTML = renderMarkdown(full);
       bindCopyButtons(shell.body);
-      if(onDone)onDone();
+      if (onDone) onDone();
     }
   };
   step();
 }
-async function streamAI(messages,onToken,onDone,onError){
-  const token=getToken();
-  try{
-    const response=await fetch(`${FLARE_API}/api/ai`,{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Accept":"text/event-stream, application/json",
-        "Authorization":`Bearer ${token}`,
-        "ngrok-skip-browser-warning":"true"
+
+const PHASES = {
+  "Brain": "Making prompt better…",
+  "Brain (Final)": "Finalizing answer…",
+  "Triage": "Routing specialists…",
+  "Researcher": "Gathering facts…",
+  "Analyst": "Structuring the problem…",
+  "Creative": "Exploring better ideas…",
+  "Specialist": "Applying domain expertise…",
+  "Critic": "Stress-testing claims…",
+  "Debate/Verifier": "Resolving contradictions…",
+  "Writer": "Writing the answer…",
+  "Quality Control": "Polishing output…"
+};
+function agentColor(name) {
+  const map = {
+    "Brain": "#ff8a00", "Brain (Final)": "#ff8a00", "Triage": "#60a5fa",
+    "Researcher": "#34d399", "Analyst": "#a78bfa", "Creative": "#f472b6",
+    "Specialist": "#22d3ee", "Critic": "#f87171", "Debate/Verifier": "#fbbf24",
+    "Writer": "#4ade80", "Quality Control": "#c084fc", "System": "#94a3b8"
+  };
+  if (map[name]) return map[name];
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) | 0;
+  return `hsl(${Math.abs(h) % 360} 70% 55%)`;
+}
+function agentInitial(name) {
+  const parts = String(name).split(/[\s/()]+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return String(name).slice(0, 2).toUpperCase();
+}
+
+function createMultiShell() {
+  const messages = document.getElementById("messages");
+  const empty = messages.querySelector(".empty-state");
+  if (empty) empty.remove();
+  const div = document.createElement("div");
+  div.className = "msg assistant";
+  div.innerHTML = `
+    <div class="msg-avatar"><img src="https://iili.io/fuZmZP9.gif" alt=""></div>
+    <div class="msg-content">
+      <div class="msg-role">Flare <span class="agent-tag" id="liveAgentTag" style="display:none"></span></div>
+      <div class="phase-banner" id="phaseBanner">Starting agents…</div>
+      <div class="agent-ball-row"></div>
+      <div class="agents-container"></div>
+      <div class="msg-body final-body"></div>
+    </div>`;
+  messages.appendChild(div);
+  scrollMessagesToBottom(true);
+  return {
+    el: div,
+    ballRow: div.querySelector(".agent-ball-row"),
+    agentsContainer: div.querySelector(".agents-container"),
+    finalBody: div.querySelector(".final-body"),
+    liveTag: div.querySelector("#liveAgentTag"),
+    agentCards: {},
+    balls: {},
+    ballStatuses: {},
+    ballWraps: {}
+  };
+}
+function ensureBall(shell, agentName) {
+  if (shell.balls[agentName]) return shell.balls[agentName];
+  const color = agentColor(agentName);
+  const wrap = document.createElement("div");
+  wrap.className = "agent-ball-wrap";
+  wrap.style.opacity = "0";
+  wrap.style.transform = "scale(0.6)";
+  wrap.style.transition = "opacity .35s ease, transform .35s ease";
+  const ball = document.createElement("div");
+  ball.className = "agent-ball";
+  ball.style.background = color;
+  ball.innerHTML = `${escapeHTML(agentInitial(agentName))}<span class="ball-tip">${escapeHTML(agentName)}</span>`;
+  const status = document.createElement("div");
+  status.className = "ball-status";
+  wrap.appendChild(ball);
+  wrap.appendChild(status);
+  shell.ballRow.appendChild(wrap);
+  requestAnimationFrame(() => {
+    wrap.style.opacity = "1";
+    wrap.style.transform = "scale(1)";
+  });
+  shell.balls[agentName] = ball;
+  shell.ballWraps[agentName] = wrap;
+  shell.ballStatuses[agentName] = status;
+  scrollMessagesToBottom();
+  return ball;
+}
+function setBallStatus(shell, agentName, text) {
+  ensureBall(shell, agentName);
+  const st = shell.ballStatuses[agentName];
+  if (st) st.textContent = text || "";
+  shell.liveTag.style.display = "inline-block";
+  shell.liveTag.textContent = text ? `${agentName} · ${text}` : agentName;
+  shell.liveTag.style.color = agentColor(agentName);
+}
+function ensureAgentCard(shell, agentName) {
+  if (shell.agentCards[agentName]) return shell.agentCards[agentName];
+  const color = agentColor(agentName);
+  const card = document.createElement("div");
+  card.className = "agent-card";
+  card.innerHTML = `
+    <div class="agent-card-header">
+      <span class="dot" style="background:${color};color:${color}"></span>
+      <span class="name">${escapeHTML(agentName)}</span>
+      <span class="typing-dots-inline" style="color:${color};display:none"><i></i><i></i><i></i></span>
+      <span class="chev">›</span>
+    </div>
+    <div class="agent-think" style="display:none">
+      <div class="agent-think-label">Thinking</div>
+      <div class="agent-think-body"></div>
+    </div>
+    <div class="agent-card-body"></div>`;
+  const header = card.querySelector(".agent-card-header");
+  const body = card.querySelector(".agent-card-body");
+  const dots = card.querySelector(".typing-dots-inline");
+  const thinkWrap = card.querySelector(".agent-think");
+  const thinkBody = card.querySelector(".agent-think-body");
+  header.addEventListener("click", () => {
+    const open = body.classList.toggle("open");
+    header.classList.toggle("open", open);
+    if (thinkWrap.dataset.hasThink === "1") {
+      thinkWrap.style.display = open ? "block" : "none";
+    }
+  });
+  shell.agentsContainer.appendChild(card);
+  shell.agentCards[agentName] = { card, header, body, dots, color, thinkWrap, thinkBody };
+  scrollMessagesToBottom();
+  return shell.agentCards[agentName];
+}
+function setAgentRunning(shell, agentName, label) {
+  const c = ensureAgentCard(shell, agentName);
+  const ball = ensureBall(shell, agentName);
+  c.header.classList.remove("done");
+  if (c.dots) c.dots.style.display = "inline-flex";
+  Object.values(shell.balls).forEach(b => b.classList.remove("live"));
+  ball.classList.add("live");
+  const phase = PHASES[agentName] || (label ? String(label) : `${agentName} working…`);
+  const banner = shell.el.querySelector("#phaseBanner");
+  if (banner) banner.textContent = phase;
+  shell.liveTag.style.display = "inline-block";
+  shell.liveTag.textContent = label ? `${agentName} · ${label}` : agentName;
+  shell.liveTag.style.color = c.color;
+}
+function setAgentThinking(shell, agentName, thinking) {
+  const c = ensureAgentCard(shell, agentName);
+  ensureBall(shell, agentName);
+  if (!thinking) return;
+  c._pendingThink = (c._pendingThink ? c._pendingThink + "\n" : "") + thinking;
+  c.thinkWrap.dataset.hasThink = "1";
+}
+function setAgentDone(shell, agentName, content) {
+  const c = ensureAgentCard(shell, agentName);
+  const ball = ensureBall(shell, agentName);
+  c.header.classList.add("done");
+  if (c.dots) c.dots.style.display = "none";
+  ball.classList.remove("live");
+  let think = c._pendingThink || "";
+  if (!think && content && content.length > 20 && !content.startsWith("✓")) {
+    think = content;
+  }
+  if (think) {
+    c.thinkWrap.dataset.hasThink = "1";
+    c.thinkWrap.style.display = "block";
+    c.thinkBody.textContent = think;
+    c.body.classList.add("open");
+    c.header.classList.add("open");
+  } else if (content) {
+    c.body.textContent = content;
+    c.body.classList.add("open");
+    c.header.classList.add("open");
+  }
+  c._pendingThink = "";
+}
+function typeFinalMulti(shell, answer, onDone) {
+  const full = String(answer || "");
+  let i = 0;
+  const chunk = Math.max(48, Math.floor(full.length / 20));
+  const step = () => {
+    i = Math.min(i + chunk, full.length);
+    const slice = full.slice(0, i);
+    shell.finalBody.innerHTML = renderMarkdown(slice) + (i < full.length ? '<span class="cursor"></span>' : "");
+    bindCopyButtons(shell.finalBody);
+    scrollMessagesToBottom();
+    if (i < full.length) {
+      requestAnimationFrame(() => setTimeout(step, 6));
+    } else {
+      shell.finalBody.innerHTML = renderMarkdown(full);
+      bindCopyButtons(shell.finalBody);
+      Object.values(shell.balls || {}).forEach(b => b.classList.remove("live"));
+      shell.liveTag.style.display = "none";
+      const banner = shell.el.querySelector("#phaseBanner");
+      if (banner) banner.textContent = "Complete";
+      if (onDone) onDone();
+    }
+  };
+  step();
+}
+
+async function streamNormal(messages, onToken, onDone, onError) {
+  const token = getToken();
+  try {
+    const response = await fetch(`${FLARE_API}/api/ai`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream, application/json",
+        "Authorization": `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true"
       },
-      body:JSON.stringify({messages,stream:true})
+      body: JSON.stringify({ messages, stream: true, model: "flare" })
     });
-    const ct=response.headers.get("content-type")||"";
-    if(ct.includes("application/json")){
-      const data=await response.json();
-      if(!response.ok||data.error)throw new Error(data.error||`HTTP ${response.status}`);
-      const reply=data.reply||data.message||data.content||"";
+    const ct = response.headers.get("content-type") || "";
+    if (ct.includes("application/json")) {
+      const data = await response.json();
+      if (!response.ok || data.error) throw new Error(data.error || `HTTP ${response.status}`);
+      const reply = data.reply || data.message || data.content || "";
       onToken(reply);
       onDone(reply);
       return;
     }
-    if(!response.ok){
-      const t=await response.text();
-      throw new Error(t.slice(0,200)||`HTTP ${response.status}`);
+    if (!response.ok) {
+      const t = await response.text();
+      throw new Error(t.slice(0, 200) || `HTTP ${response.status}`);
     }
-    const reader=response.body.getReader();
-    const decoder=new TextDecoder();
-    let buffer="";
-    let full="";
-    while(true){
-      const {value,done}=await reader.read();
-      if(done)break;
-      buffer+=decoder.decode(value,{stream:true});
-      const parts=buffer.split("\n");
-      buffer=parts.pop()||"";
-      for(const line of parts){
-        const trimmed=line.trim();
-        if(!trimmed.startsWith("data:"))continue;
-        const payload=trimmed.slice(5).trim();
-        if(!payload||payload==="[DONE]")continue;
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let full = "";
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const parts = buffer.split("\n");
+      buffer = parts.pop() || "";
+      for (const line of parts) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith("data:")) continue;
+        const payload = trimmed.slice(5).trim();
+        if (!payload || payload === "[DONE]") continue;
         let obj;
-        try{obj=JSON.parse(payload);}catch{continue;}
-        if(obj.error)throw new Error(obj.error);
-        if(obj.token){
-          full+=obj.token;
+        try { obj = JSON.parse(payload); } catch { continue; }
+        if (obj.error) throw new Error(obj.error);
+        if (obj.token) {
+          full += obj.token;
           onToken(full);
         }
-        if(obj.done){
+        if (obj.done) {
           onDone(full);
           return;
         }
       }
     }
     onDone(full);
-  }catch(e){
+  } catch (e) {
     onError(e);
   }
 }
-async function saveCurrentChat(){
-  if(!getToken()||!currentChatId)return;
-  const title=titleFromMessages(chatHistory);
-  try{
-    await fetchJson(`${FLARE_API}/api/chats/${currentChatId}`,{
-      method:"POST",
-      headers:authHeaders({"Content-Type":"application/json"}),
-      body:JSON.stringify({title,messages:chatHistory})
+
+async function streamMulti(message, shell, onDone, onError) {
+  const token = getToken();
+  try {
+    const response = await fetch(`${FLARE_API}/api/ai/multi`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream",
+        "Authorization": `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true"
+      },
+      body: JSON.stringify({ message, stream: true })
     });
-    const c=chats.find(x=>x.id===currentChatId);
-    if(c){c.title=title;c.updated_at=new Date().toISOString();}
-    chats.sort((a,b)=>String(b.updated_at||"").localeCompare(String(a.updated_at||"")));
-    renderChatList();
-  }catch(e){console.error("[FLARE] save chat failed",e);}
+    if (!response.ok) {
+      const t = await response.text();
+      throw new Error(t.slice(0, 200) || `HTTP ${response.status}`);
+    }
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let finalContent = "";
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const parts = buffer.split("\n");
+      buffer = parts.pop() || "";
+      for (const line of parts) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith("data:")) continue;
+        const payload = trimmed.slice(5).trim();
+        if (!payload || payload === "[DONE]") continue;
+        let obj;
+        try { obj = JSON.parse(payload); } catch { continue; }
+
+        document.getElementById("typing").classList.remove("show");
+
+        if (obj.type === "agent_start") {
+          setAgentRunning(shell, obj.agent, obj.content || "Starting…");
+        } else if (obj.type === "agent_status") {
+          setBallStatus(shell, obj.agent, obj.content || "");
+          setAgentRunning(shell, obj.agent, obj.content || "");
+        } else if (obj.type === "agent_thinking") {
+          setAgentThinking(shell, obj.agent, obj.content || "");
+        } else if (obj.type === "agent_token") {
+          if (obj.content) setAgentThinking(shell, obj.agent, obj.content);
+        } else if (obj.type === "agent_done") {
+          setAgentDone(shell, obj.agent, obj.content || "");
+          setBallStatus(shell, obj.agent, obj.content || "Done");
+        } else if (obj.type === "final") {
+          finalContent = obj.content || "";
+          shell.liveTag.style.display = "none";
+          Object.values(shell.balls || {}).forEach(b => b.classList.remove("live"));
+          typeFinalMulti(shell, finalContent, () => onDone(finalContent));
+        } else if (obj.type === "error") {
+          shell.finalBody.innerHTML = renderMarkdown(`**Error:** ${obj.content || "Unknown error"}`);
+          onError(new Error(obj.content || "Unknown error"));
+        }
+      }
+    }
+    if (!finalContent) onDone("");
+  } catch (e) {
+    onError(e);
+  }
 }
-async function startNewChat(silent){
-  if(!getToken())return;
-  try{
-    const data=await fetchJson(`${FLARE_API}/api/chats`,{
-      method:"POST",
-      headers:authHeaders({"Content-Type":"application/json"}),
-      body:JSON.stringify({title:"New chat",messages:[]})
+
+async function saveCurrentChat() {
+  if (!getToken() || !currentChatId) return;
+  const title = titleFromMessages(chatHistory);
+  try {
+    await fetchJson(`${FLARE_API}/api/chats/${currentChatId}`, {
+      method: "POST",
+      headers: authHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ title, messages: chatHistory })
     });
-    const chat=data.chat;
-    chats.unshift({id:chat.id,title:chat.title,created_at:chat.created_at,updated_at:chat.updated_at});
-    currentChatId=chat.id;
-    chatHistory=[];
+    const c = chats.find(x => x.id === currentChatId);
+    if (c) { c.title = title; c.updated_at = new Date().toISOString(); }
+    chats.sort((a, b) => String(b.updated_at || "").localeCompare(String(a.updated_at || "")));
+    renderChatList();
+  } catch (e) { console.error("[FLARE] save chat failed", e); }
+}
+async function startNewChat(silent) {
+  if (!getToken()) return;
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/chats`, {
+      method: "POST",
+      headers: authHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ title: "New chat", messages: [] })
+    });
+    const chat = data.chat;
+    chats.unshift({ id: chat.id, title: chat.title, created_at: chat.created_at, updated_at: chat.updated_at });
+    currentChatId = chat.id;
+    chatHistory = [];
     renderChatList();
     renderEmptyMessages();
-    if(!silent)document.getElementById("chatInput").focus();
-  }catch(e){
+    if (!silent) document.getElementById("chatInput").focus();
+  } catch (e) {
     console.error(e);
-    currentChatId=null;
-    chatHistory=[];
+    currentChatId = null;
+    chatHistory = [];
     renderEmptyMessages();
   }
 }
-async function openChat(id){
-  if(!getToken())return;
-  try{
-    const data=await fetchJson(`${FLARE_API}/api/chats/${id}`,{method:"GET",headers:authHeaders()});
-    const chat=data.chat;
-    currentChatId=chat.id;
-    chatHistory=Array.isArray(chat.messages)?chat.messages:[];
+async function openChat(id) {
+  if (!getToken()) return;
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/chats/${id}`, { method: "GET", headers: authHeaders() });
+    const chat = data.chat;
+    currentChatId = chat.id;
+    chatHistory = Array.isArray(chat.messages) ? chat.messages : [];
     renderChatList();
     renderHistoryMessages();
-  }catch(e){
-    console.error(e);
-  }
+  } catch (e) { console.error(e); }
 }
-async function deleteChat(id){
-  if(!getToken())return;
-  try{
-    await fetchJson(`${FLARE_API}/api/chats/${id}`,{method:"POST",headers:authHeaders({"Content-Type":"application/json"}),body:JSON.stringify({action:"delete"})});
-    chats=chats.filter(c=>c.id!==id);
-    if(currentChatId===id){
-      currentChatId=null;
-      if(chats.length)await openChat(chats[0].id);
+async function deleteChat(id) {
+  if (!getToken()) return;
+  try {
+    await fetchJson(`${FLARE_API}/api/chats/${id}`, {
+      method: "POST",
+      headers: authHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ action: "delete" })
+    });
+    chats = chats.filter(c => c.id !== id);
+    if (currentChatId === id) {
+      currentChatId = null;
+      if (chats.length) await openChat(chats[0].id);
       else await startNewChat(true);
-    }else renderChatList();
-  }catch(e){
-    console.error(e);
-  }
+    } else renderChatList();
+  } catch (e) { console.error(e); }
 }
 
-document.getElementById("messagesWrap").addEventListener("scroll",()=>{
-  const wrap=document.getElementById("messagesWrap");
-  const maxScroll=Math.max(0,wrap.scrollHeight-wrap.clientHeight);
-  userScrolledUp=wrap.scrollTop < maxScroll-40;
+document.getElementById("messagesWrap").addEventListener("scroll", () => {
+  const wrap = document.getElementById("messagesWrap");
+  const maxScroll = Math.max(0, wrap.scrollHeight - wrap.clientHeight);
+  userScrolledUp = wrap.scrollTop < maxScroll - 40;
 });
-
-document.getElementById("newChatBtn").addEventListener("click",e=>{e.preventDefault();startNewChat(false);});
-document.getElementById("sideToggle").addEventListener("click",()=>{
+document.getElementById("newChatBtn").addEventListener("click", e => {
+  e.preventDefault();
+  startNewChat(false);
+});
+document.getElementById("sideToggle").addEventListener("click", () => {
   document.getElementById("chatSide").classList.toggle("open");
 });
 
-async function sendMessage(){
-  if(isSending)return;
-  const input=document.getElementById("chatInput");
-  const text=input.value.trim();
-  if(!text)return;
-  if(!getToken()){openLoginModal();return;}
-  if(!currentChatId)await startNewChat(true);
-  isSending=true;
-  document.getElementById("sendBtn").disabled=true;
-  input.value="";
-  input.style.height="auto";
+async function sendMessage() {
+  if (isSending) return;
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+  if (!text) return;
+  if (!getToken()) { openLoginModal(); return; }
+  if (!currentChatId) await startNewChat(true);
+
+  isSending = true;
+  document.getElementById("sendBtn").disabled = true;
+  input.value = "";
+  input.style.height = "auto";
   appendUserMessage(text);
-  chatHistory.push({role:"user",content:text});
+  chatHistory.push({ role: "user", content: text });
   await saveCurrentChat();
   document.getElementById("typing").classList.add("show");
   scrollMessagesToBottom(true);
-  const shell=createAssistantShell();
-  let lastRaw="";
-  let finished=false;
-  let streamedAny=false;
-  const finish=(raw)=>{
-    if(finished)return;
-    finished=true;
-    document.getElementById("typing").classList.remove("show");
-    const {thinking,answer}=splitThinking(raw||lastRaw);
-    setThinking(shell,thinking);
-    const finalText=answer||"Sorry, I couldn't generate a response.";
-    chatHistory.push({role:"assistant",content:finalText});
-    saveCurrentChat();
-    const unlock=()=>{
-      isSending=false;
-      document.getElementById("sendBtn").disabled=false;
-      input.focus();
-    };
-    if(streamedAny){
-      shell.body.innerHTML=renderMarkdown(finalText);
-      bindCopyButtons(shell.body);
-      scrollMessagesToBottom();
-      unlock();
-    }else{
-      typeAnswer(shell,finalText,unlock);
-    }
-  };
-  await streamAI(
-    chatHistory.slice(0,-1).concat([{role:"user",content:text}]),
-    (partial)=>{
-      lastRaw=partial;
+
+  if (currentModel === "flare-multi") {
+    const shell = createMultiShell();
+    await streamMulti(
+      text,
+      shell,
+      (finalText) => {
+        document.getElementById("typing").classList.remove("show");
+        const answer = finalText || "Sorry, I couldn't generate a response.";
+        chatHistory.push({ role: "assistant", content: answer });
+        saveCurrentChat();
+        isSending = false;
+        document.getElementById("sendBtn").disabled = false;
+        input.focus();
+      },
+      (e) => {
+        document.getElementById("typing").classList.remove("show");
+        shell.finalBody.innerHTML = renderMarkdown(`**Error:** ${e.message || "Could not reach Flare Multi."}`);
+        isSending = false;
+        document.getElementById("sendBtn").disabled = false;
+        input.focus();
+      }
+    );
+  } else {
+    const shell = createAssistantShell();
+    let lastRaw = "";
+    let finished = false;
+    let streamedAny = false;
+    const finish = (raw) => {
+      if (finished) return;
+      finished = true;
       document.getElementById("typing").classList.remove("show");
-      const {thinking,answer}=splitThinking(partial);
-      setThinking(shell,thinking);
-      if(answer){
-        streamedAny=true;
-        shell.body.innerHTML=renderMarkdown(answer)+'<span class="cursor"></span>';
+      const { thinking, answer } = splitThinking(raw || lastRaw);
+      setThinking(shell, thinking);
+      const finalText = answer || "Sorry, I couldn't generate a response.";
+      chatHistory.push({ role: "assistant", content: finalText });
+      saveCurrentChat();
+      const unlock = () => {
+        isSending = false;
+        document.getElementById("sendBtn").disabled = false;
+        input.focus();
+      };
+      if (streamedAny) {
+        shell.body.innerHTML = renderMarkdown(finalText);
         bindCopyButtons(shell.body);
         scrollMessagesToBottom();
+        unlock();
+      } else {
+        typeAnswer(shell, finalText, unlock);
       }
-    },
-    (full)=>finish(full),
-    (e)=>{
-      document.getElementById("typing").classList.remove("show");
-      shell.body.innerHTML=renderMarkdown(`**Error:** ${e.message||"Could not reach Flare AI."}`);
-      isSending=false;
-      document.getElementById("sendBtn").disabled=false;
-      input.focus();
-    }
-  );
+    };
+    await streamNormal(
+      chatHistory.slice(0, -1).concat([{ role: "user", content: text }]),
+      (partial) => {
+        lastRaw = partial;
+        document.getElementById("typing").classList.remove("show");
+        const { thinking, answer } = splitThinking(partial);
+        setThinking(shell, thinking);
+        if (answer) {
+          streamedAny = true;
+          shell.body.innerHTML = renderMarkdown(answer) + '<span class="cursor"></span>';
+          bindCopyButtons(shell.body);
+          scrollMessagesToBottom();
+        }
+      },
+      (full) => finish(full),
+      (e) => {
+        document.getElementById("typing").classList.remove("show");
+        shell.body.innerHTML = renderMarkdown(`**Error:** ${e.message || "Could not reach Flare AI."}`);
+        isSending = false;
+        document.getElementById("sendBtn").disabled = false;
+        input.focus();
+      }
+    );
+  }
 }
-const chatInput=document.getElementById("chatInput");
-const sendBtn=document.getElementById("sendBtn");
-chatInput.addEventListener("input",()=>{
-  chatInput.style.height="auto";
-  chatInput.style.height=Math.min(chatInput.scrollHeight,200)+"px";
-  sendBtn.disabled=!chatInput.value.trim()||isSending;
+
+const chatInput = document.getElementById("chatInput");
+const sendBtn = document.getElementById("sendBtn");
+chatInput.addEventListener("input", () => {
+  chatInput.style.height = "auto";
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 200) + "px";
+  sendBtn.disabled = !chatInput.value.trim() || isSending;
 });
-chatInput.addEventListener("keydown",e=>{
-  if(e.key==="Enter"&&!e.shiftKey){
+chatInput.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
     sendMessage();
   }
 });
-sendBtn.addEventListener("click",sendMessage);
+sendBtn.addEventListener("click", sendMessage);
+
+function openLoginModal() {
+  document.getElementById("loginModal").classList.add("show");
+  document.getElementById("loginError").classList.remove("show");
+}
+function openSignupModal() {
+  document.getElementById("signupModal").classList.add("show");
+  document.getElementById("signupError").classList.remove("show");
+}
+function openVerify(email) {
+  pendingVerifyEmail = email;
+  document.getElementById("verifyEmailDisplay").textContent = email;
+  document.getElementById("verifyModal").classList.add("show");
+  document.getElementById("verifyError").classList.remove("show");
+  document.getElementById("verifyCodeInput").value = "";
+  document.getElementById("verifyCodeInput").focus();
+}
+function closeModals() {
+  document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("show"));
+}
+
+document.getElementById("openLogin").addEventListener("click", openLoginModal);
+document.getElementById("openSignup").addEventListener("click", openSignupModal);
+document.getElementById("loginCancel").addEventListener("click", closeModals);
+document.getElementById("signupCancel").addEventListener("click", closeModals);
+document.getElementById("switchToSignup").addEventListener("click", () => {
+  closeModals();
+  openSignupModal();
+});
+document.getElementById("switchToLogin").addEventListener("click", () => {
+  closeModals();
+  openLoginModal();
+});
+
+document.getElementById("loginSubmit").addEventListener("click", async () => {
+  const err = document.getElementById("loginError");
+  err.classList.remove("show");
+  const login = document.getElementById("loginId").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json", "ngrok-skip-browser-warning": "true" },
+      body: JSON.stringify({ login, password })
+    });
+    if (data.needs_verification) { openVerify(data.email); return; }
+    if (data.needs_2fa) { openVerify(data.email); return; }
+    if (!data.success) throw new Error(data.error || "Login failed");
+    setAuth(data.token, data.user);
+    closeModals();
+  } catch (e) {
+    err.textContent = e.message;
+    err.classList.add("show");
+  }
+});
+
+document.getElementById("signupSubmit").addEventListener("click", async () => {
+  const err = document.getElementById("signupError");
+  err.classList.remove("show");
+  const username = document.getElementById("signupUsername").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json", "ngrok-skip-browser-warning": "true" },
+      body: JSON.stringify({ username, email, password })
+    });
+    if (data.needs_verification) { openVerify(data.email || email); return; }
+    if (!data.success) throw new Error(data.error || "Signup failed");
+    setAuth(data.token, data.user);
+    closeModals();
+  } catch (e) {
+    err.textContent = e.message;
+    err.classList.add("show");
+  }
+});
+
+const verifyCodeInput = document.getElementById("verifyCodeInput");
+verifyCodeInput.addEventListener("input", () => {
+  verifyCodeInput.value = verifyCodeInput.value.replace(/\D/g, "").slice(0, 6);
+});
+verifyCodeInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") { e.preventDefault(); document.getElementById("verifySubmit").click(); }
+});
+document.getElementById("verifySubmit").addEventListener("click", async () => {
+  const err = document.getElementById("verifyError");
+  err.classList.remove("show");
+  const code = verifyCodeInput.value.trim();
+  if (!/^\d{6}$/.test(code)) {
+    err.textContent = "Enter the 6-digit code from your email.";
+    err.style.color = "#fca5a5";
+    err.classList.add("show");
+    verifyCodeInput.focus();
+    return;
+  }
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/verify-code`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json", "ngrok-skip-browser-warning": "true" },
+      body: JSON.stringify({ email: pendingVerifyEmail, code })
+    });
+    if (!data.success) throw new Error(data.error || "Verification failed");
+    setAuth(data.token, data.user);
+    document.getElementById("verifyModal").classList.remove("show");
+  } catch (e) {
+    err.textContent = e.message;
+    err.classList.add("show");
+  }
+});
+document.getElementById("resendCodeBtn").addEventListener("click", async () => {
+  const err = document.getElementById("verifyError");
+  err.classList.remove("show");
+  try {
+    const data = await fetchJson(`${FLARE_API}/api/auth/resend-code`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json", "ngrok-skip-browser-warning": "true" },
+      body: JSON.stringify({ email: pendingVerifyEmail })
+    });
+    if (!data.success) throw new Error(data.error || "Could not resend");
+    err.textContent = "New code sent — check your inbox.";
+    err.style.color = "#22c55e";
+    err.classList.add("show");
+    verifyCodeInput.value = "";
+    verifyCodeInput.focus();
+  } catch (e) {
+    err.style.color = "#fca5a5";
+    err.textContent = e.message;
+    err.classList.add("show");
+  }
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  const token = getToken();
+  if (token) {
+    try {
+      await fetch(`${FLARE_API}/api/auth/logout`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
+      });
+    } catch {}
+  }
+  clearAuth();
+});
+
 checkSession();
 </script>
 </body>
