@@ -984,9 +984,9 @@ function renderEmptyMessages() {
   const messages = document.getElementById("messages");
   messages.innerHTML = `
     <div class="empty-state">
-      <div class="empty-icon"><img src="https:
-      <h1>What can I help with?</h1>
-      <p>Ask about deals, ideas, or anything else. A quick sample of our models. (Stronger ones will not be public on this site.)</p>
+      <div class="empty-icon"><img src="https://iili.io/fuZmZP9.gif" alt=""></div>
+      <h1>Need help with something?</h1>
+      <p>Ask about deals, ideas, or anything else. Pick a model above — Flare for speed, Flare Multi for deeper multi-agent answers.</p>
     </div>`;
   chatHistory = [];
 }
@@ -1370,6 +1370,39 @@ async function streamMulti(message, shell, onDone, onError) {
     const decoder = new TextDecoder();
     let buffer = "";
     let finalContent = "";
+    let finalReceived = false;
+    let answerStarted = false;
+    const startedAgents = new Set();
+    const doneAgents = new Set();
+
+    const allBallsDone = () =>
+      startedAgents.size > 0 && [...startedAgents].every(a => doneAgents.has(a));
+
+    const tryStartAnswer = () => {
+      if (answerStarted) return;
+      if (!finalReceived) {
+        // Balls finished first — show waiting for answer until final arrives
+        if (allBallsDone()) {
+          const banner = shell.el.querySelector("#phaseBanner");
+          if (banner) banner.textContent = "Composing answer…";
+          Object.values(shell.balls || {}).forEach(b => b.classList.remove("live"));
+          shell.liveTag.style.display = "none";
+        }
+        return;
+      }
+      // Final is ready — only type after every ball has completed
+      if (!allBallsDone() && startedAgents.size > 0) {
+        const banner = shell.el.querySelector("#phaseBanner");
+        if (banner) banner.textContent = "Finishing agents…";
+        return;
+      }
+      answerStarted = true;
+      Object.values(shell.balls || {}).forEach(b => b.classList.remove("live"));
+      shell.liveTag.style.display = "none";
+      const banner = shell.el.querySelector("#phaseBanner");
+      if (banner) banner.textContent = "Writing answer…";
+      typeFinalMulti(shell, finalContent, () => onDone(finalContent));
+    };
 
     while (true) {
       const { value, done } = await reader.read();
@@ -1388,32 +1421,45 @@ async function streamMulti(message, shell, onDone, onError) {
         document.getElementById("typing").classList.remove("show");
 
         if (obj.type === "agent_start") {
+          startedAgents.add(obj.agent);
           setAgentRunning(shell, obj.agent, obj.content || "Starting…");
         } else if (obj.type === "agent_status") {
+          startedAgents.add(obj.agent);
           setBallStatus(shell, obj.agent, obj.content || "");
           setAgentRunning(shell, obj.agent, obj.content || "");
         } else if (obj.type === "agent_thinking") {
+          startedAgents.add(obj.agent);
           setAgentThinking(shell, obj.agent, obj.content || "");
         } else if (obj.type === "agent_token") {
+          startedAgents.add(obj.agent);
           if (obj.content) setAgentThinking(shell, obj.agent, obj.content);
         } else if (obj.type === "agent_done") {
+          startedAgents.add(obj.agent);
+          doneAgents.add(obj.agent);
           setAgentDone(shell, obj.agent, obj.content || "");
           const doneLabel = (obj.content || "").startsWith("✓")
             ? obj.content
             : "Done";
           setBallStatus(shell, obj.agent, doneLabel);
+          tryStartAnswer();
         } else if (obj.type === "final") {
           finalContent = obj.content || "";
-          shell.liveTag.style.display = "none";
-          Object.values(shell.balls || {}).forEach(b => b.classList.remove("live"));
-          typeFinalMulti(shell, finalContent, () => onDone(finalContent));
+          finalReceived = true;
+          tryStartAnswer();
         } else if (obj.type === "error") {
           shell.finalBody.innerHTML = renderMarkdown(`**Error:** ${obj.content || "Unknown error"}`);
           onError(new Error(obj.content || "Unknown error"));
         }
       }
     }
-    if (!finalContent) onDone("");
+    if (!answerStarted) {
+      if (finalReceived) {
+        answerStarted = true;
+        typeFinalMulti(shell, finalContent, () => onDone(finalContent));
+      } else {
+        onDone("");
+      }
+    }
   } catch (e) {
     onError(e);
   }
