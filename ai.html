@@ -426,7 +426,7 @@ button { cursor: pointer; border: 0; background: none; }
   border-radius: 28px;
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 0 0 0.5px rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.35);
-  overflow: visible;
+  overflow: visible;          
   transition: border-color .15s, box-shadow .15s;
   position: relative;
   z-index: 20;
@@ -481,7 +481,7 @@ button { cursor: pointer; border: 0; background: none; }
 
 .model-menu {
   position: absolute;
-  bottom: calc(100% + 10px);
+  bottom: calc(100% + 10px);   
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
@@ -716,7 +716,9 @@ button { cursor: pointer; border: 0; background: none; }
 </div>
 
 <script>
-const FLARE_API = window.FLARE_API || "https://d73b-2a00-23c8-3639-601-dd36-aa07-de7d-6164.ngrok-free.app";
+const FLARE_API = window.FLARE_API || (location.hostname === "localhost" || location.hostname === "127.0.0.1"
+  ? "http://127.0.0.1:2034"
+  : "https://your-ngrok-or-domain.example.com"); 
 
 let currentUser = null;
 let currentChatId = null;
@@ -726,7 +728,7 @@ let isSending = false;
 let userScrolledUp = false;
 let openMenuId = null;
 let pendingVerifyEmail = "";
-let currentModel = localStorage.getItem("flare_model") || "flare";
+let currentModel = localStorage.getItem("flare_model") || "flare"; 
 
 function getToken() { return localStorage.getItem("flare_token") || ""; }
 function setAuth(token, user) {
@@ -813,6 +815,13 @@ document.addEventListener("click", () => {
 
 function escapeHTML(s) {
   return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function firstSentence(text) {
+  const t = String(text ?? "").replace(/\s+/g, " ").trim();
+  if (!t) return "";
+  const m = t.match(/^(.+?[.!?])(?:\s|$)/);
+  if (m) return m[1].trim();
+  return t.length > 140 ? t.slice(0, 137) + "…" : t;
 }
 function splitThinking(raw) {
   let text = String(raw ?? "");
@@ -975,9 +984,9 @@ function renderEmptyMessages() {
   const messages = document.getElementById("messages");
   messages.innerHTML = `
     <div class="empty-state">
-      <div class="empty-icon"><img src="https://iili.io/fuZmZP9.gif" alt="Flare"></div>
+      <div class="empty-icon"><img src="https:
       <h1>What can I help with?</h1>
-      <p>Ask about deals, ideas, or anything else. A quick sample of our models. (Free access one of the more advanced models.)</p>
+      <p>Ask about deals, ideas, or anything else. A quick sample of our models. (Stronger ones will not be public on this site.)</p>
     </div>`;
   chatHistory = [];
 }
@@ -1014,7 +1023,7 @@ function appendAssistantStatic(content) {
   const { thinking, answer } = splitThinking(content);
   let thinkHtml = "";
   if (thinking) {
-    thinkHtml = `<div class="think-wrap"><button type="button" class="think-btn">View thinking</button><div class="think-panel">${escapeHTML(thinking)}</div></div>`;
+    thinkHtml = `<div class="think-wrap"><button type="button" class="think-btn">View thinking</button><div class="think-panel">${escapeHTML(firstSentence(thinking))}</div></div>`;
   }
   div.innerHTML = `<div class="msg-avatar"><img src="https://iili.io/fuZmZP9.gif" alt=""></div><div class="msg-content"><div class="msg-role">Flare</div>${thinkHtml}<div class="msg-body">${renderMarkdown(answer || content)}</div></div>`;
   const thinkBtn = div.querySelector(".think-btn");
@@ -1057,7 +1066,7 @@ function createAssistantShell() {
 function setThinking(shell, thinking) {
   if (!thinking) return;
   shell.thinkWrap.style.display = "block";
-  shell.thinkPanel.textContent = thinking;
+  shell.thinkPanel.textContent = firstSentence(thinking);
 }
 function typeAnswer(shell, answer, onDone) {
   const full = String(answer || "");
@@ -1244,7 +1253,7 @@ function setAgentDone(shell, agentName, content) {
   if (think) {
     c.thinkWrap.dataset.hasThink = "1";
     c.thinkWrap.style.display = "block";
-    c.thinkBody.textContent = think;
+    c.thinkBody.textContent = firstSentence(think);
     c.body.classList.add("open");
     c.header.classList.add("open");
   } else if (content) {
@@ -1388,7 +1397,10 @@ async function streamMulti(message, shell, onDone, onError) {
           if (obj.content) setAgentThinking(shell, obj.agent, obj.content);
         } else if (obj.type === "agent_done") {
           setAgentDone(shell, obj.agent, obj.content || "");
-          setBallStatus(shell, obj.agent, obj.content || "Done");
+          const doneLabel = (obj.content || "").startsWith("✓")
+            ? obj.content
+            : "Done";
+          setBallStatus(shell, obj.agent, doneLabel);
         } else if (obj.type === "final") {
           finalContent = obj.content || "";
           shell.liveTag.style.display = "none";
