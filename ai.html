@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -984,7 +985,7 @@ function renderEmptyMessages() {
   const messages = document.getElementById("messages");
   messages.innerHTML = `
     <div class="empty-state">
-      <div class="empty-icon"><img src="https://iili.io/fuZmZP9.gif" alt=""></div>
+      <div class="empty-icon"><img src="https:
       <h1>Need help with something?</h1>
       <p>Ask about deals, ideas, or anything else. Pick a model, and gain free access to one of our most advanced agents.</p>
     </div>`;
@@ -1092,6 +1093,7 @@ function typeAnswer(shell, answer, onDone) {
 }
 
 const PHASES = {
+  "Prompt Enhancer": "Enhancing your prompt…",
   "Brain": "Making prompt better…",
   "Brain (Final)": "Finalizing answer…",
   "Triage": "Routing specialists…",
@@ -1106,6 +1108,7 @@ const PHASES = {
 };
 function agentColor(name) {
   const map = {
+    "Prompt Enhancer": "#ff8a00",
     "Brain": "#ff8a00", "Brain (Final)": "#ff8a00", "Triage": "#60a5fa",
     "Researcher": "#34d399", "Analyst": "#a78bfa", "Creative": "#f472b6",
     "Specialist": "#22d3ee", "Critic": "#f87171", "Debate/Verifier": "#fbbf24",
